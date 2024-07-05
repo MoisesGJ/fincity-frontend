@@ -18,7 +18,7 @@ const API = {
   },
 
   async createNewUser(data) {
-    const response = await fetch(`${BASE_URI}/users`, {
+    const r = await fetch(`${BASE_URI}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,34 +26,21 @@ const API = {
       body: JSON.stringify(data),
     });
 
+    const response = await r.json();
+
     if (!response.ok) throw new Error('Failed to create user');
 
-    return await response.json();
+    return response;
   },
 
   findUserByGoogleId: async (googleId) => {
-    const response = await fetch(`${API_URL}/users/auth/google/${googleId}`, {
+    const response = await fetch(`${BASE_URI}/users/auth/google/${googleId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    if (!response.ok) throw new Error('User not found');
-    return response.json();
-  },
-
-  updateUserGoogleInfo: async (data, googleId) => {
-    const response = await fetch(
-      `${API_URL}/users/auth/google/update/${googleId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    if (!response.ok) throw new Error('Update failed');
+    if (!response.ok) return null;
     return response.json();
   },
 };

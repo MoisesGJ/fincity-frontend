@@ -40,15 +40,14 @@ export default NextAuth({
             return null;
           }
         } catch (error) {
-          console.error('Error during authentication:', error);
           return null;
         }
       },
     }),
   ],
   pages: {
-    /*signIn: '/login',
-    signOut: '/',*/
+    signIn: '/login',
+    signOut: '/',
     error: '/registro',
   },
   callbacks: {
@@ -65,10 +64,8 @@ export default NextAuth({
       }
       return session;
     },
-    async signIn({ profile, credentials }) {
-      if (credentials) {
-        return true;
-      } else if (profile) {
+    async signIn({ account, profile }) {
+      if (account.provider === 'google') {
         try {
           const user = await API.findUserByGoogleId(profile.id);
 
@@ -85,8 +82,6 @@ export default NextAuth({
             };
 
             await API.createNewUser(data);
-          } else {
-            await API.updateUserGoogleInfo(profile.id, profile.access_token);
           }
 
           return true;
@@ -95,7 +90,7 @@ export default NextAuth({
           return false;
         }
       }
-      return false;
+      return true;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
