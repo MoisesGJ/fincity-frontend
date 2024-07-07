@@ -67,6 +67,7 @@ export default NextAuth({
     async signIn({ account, profile }) {
       if (account.provider === 'google') {
         try {
+          console.log(profile);
           const user = await API.findUserByGoogleId(profile.id);
 
           if (!user) {
@@ -77,7 +78,6 @@ export default NextAuth({
               // Profesor role
               role: '6676ee3c23f3b664bbf5f50d',
               googleId: profile.id,
-              googleToken: profile.access_token,
               password: 'gr3at@3wdsGz',
             };
 

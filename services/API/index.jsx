@@ -34,12 +34,15 @@ const API = {
   },
 
   findUserByGoogleId: async (googleId) => {
-    const response = await fetch(`${BASE_URI}/users/auth/google/${googleId}`, {
+    const r = await fetch(`${BASE_URI}/google/auth/${googleId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
+
+    const response = await r.json();
+    console.log(response);
     if (!response.ok) return null;
     return response.json();
   },

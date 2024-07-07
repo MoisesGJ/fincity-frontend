@@ -235,8 +235,7 @@ export default function Page() {
                 },
                 pattern: {
                   value: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
-                  message:
-                    'Es necesario al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+                  message: 'Es necesario un correo válido.',
                 },
               })}
             />

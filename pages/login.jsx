@@ -42,11 +42,6 @@ export default function Page() {
       password,
       redirect: false,
     });
-
-    if (res.status === 401) {
-      reset();
-      router.push('/login?error=Credenciales+inv%C3%A1lidas');
-    }
   };
 
   const notify = () =>
@@ -194,7 +189,8 @@ export default function Page() {
                   message: 'Se nececitan mínimo 8 caracteres.',
                 },
                 pattern: {
-                  value: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
+                  value:
+                    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
                   message:
                     'Es necesario al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
                 },
