@@ -44,7 +44,6 @@ export const authOptions = {
             return null;
           }
         } catch (error) {
-          console.error('Error during authentication:', error);
           return null;
         }
       },
@@ -52,8 +51,9 @@ export const authOptions = {
   ],
   // Configura las páginas personalizadas de NextAuth
   pages: {
-    error: '/registro', // Página personalizada para errores de autenticación
     signIn: '/login',
+    signOut: '/',
+    error: '/registro',
   },
   callbacks: {
     // Callback para agregar el token JWT a la sesión

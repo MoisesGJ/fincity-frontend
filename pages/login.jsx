@@ -1,20 +1,20 @@
-import { useSession, getSession } from 'next-auth/react';
-
 import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
-import API from '../services/API';
 
 import { signIn } from 'next-auth/react';
 
 import { useForm } from 'react-hook-form';
 
 import ErrorMessage from '../components/ErrorMessage';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { useRouter } from 'next/navigation';
+
+import { useSession, getSession } from 'next-auth/react';
 
 const chakra = Chakra_Petch({
   subsets: ['latin'],
@@ -25,6 +25,9 @@ export default function Page() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+
   const {
     register,
     watch,
@@ -33,44 +36,16 @@ export default function Page() {
     reset,
   } = useForm();
 
-  const onSubmit = async (data) => {
-    try {
-      delete data?.confirmPassword;
-      const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
-
-      const signUpRes = await API.createNewUser(user);
-
-      if (signUpRes?.message === 'Success') {
-        const resAuth = await signIn('credentials', {
-          email: signUpRes?.data.email,
-          password: user.password,
-          redirect: false,
-        });
-
-        if (resAuth?.ok) {
-          return router.push('/dashboard');
-        }
-
-        if (resAuth?.error) {
-          notify(resAuth.error.message || resAuth.error.toString());
-          reset();
-        }
-      } else {
-        notify(signUpRes?.message);
-        reset();
-      }
-    } catch (e) {
-      notify(e.message || e.toString());
-      reset();
-    }
+  const onSubmit = async ({ email, password }) => {
+    const res = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
   };
 
-  const searchParams = useSearchParams();
-
-  const error = searchParams.get('error');
-
-  const notify = (msg) =>
-    toast.error(msg, {
+  const notify = () =>
+    toast.error(error, {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -83,8 +58,8 @@ export default function Page() {
     });
 
   useEffect(() => {
-    if (error) setTimeout(() => notify(error), 1000);
-  }, [error]);
+    if (error) notify();
+  }, [searchParams]);
 
   if (status === 'loading') {
     return <p>Loading...</p>;
@@ -151,68 +126,14 @@ export default function Page() {
       <main
         className={`${chakra.className} mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
       >
-        <div className="xl:max-w-lg xl:w-full">
-          <h1 className="text-5xl font-bold xl:text-start">Comencemos...</h1>
-          <h2 className="mt-3 text-base">Crea tu nueva cuenta</h2>
+        <div className="xl:max-w-lg xl:w-full text-center xl:text-start">
+          <h1 className="text-5xl font-bold xl:text-start">¡Bienvenido!</h1>
+          <h2 className="mt-3 text-base">Inicia sesión</h2>
         </div>
         <form
-          className="flex flex-col items-center gap-6 mt-8 max-w-xl"
+          className="flex flex-col items-center gap-6 mt-8 max-w-xl xl:px-6 w-full"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <label className="input input-bordered flex items-center gap-2 w-full bg-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input
-              type="text"
-              className="grow bg-white"
-              placeholder="Nombre"
-              {...register('first_name', {
-                required: 'El nombre es necesario.',
-                pattern: {
-                  value: /^\S*$/,
-                  message: 'No parece un nombre válido.',
-                },
-              })}
-            />
-          </label>
-
-          {errors?.first_name && (
-            <ErrorMessage msg={errors?.first_name.message} />
-          )}
-
-          <label className="input input-bordered flex items-center gap-2 w-full bg-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input
-              type="text"
-              className="grow bg-white"
-              placeholder="Apellido"
-              {...register('last_name', {
-                required: 'El apellido es necesario.',
-                pattern: {
-                  value: /^\S*$/,
-                  message: 'No parece un apellido válido.',
-                },
-              })}
-            />
-          </label>
-
-          {errors?.last_name && (
-            <ErrorMessage msg={errors?.last_name.message} />
-          )}
-
           <label className="input input-bordered flex items-center gap-2 w-full bg-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -235,11 +156,14 @@ export default function Page() {
                 },
                 pattern: {
                   value: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
-                  message: 'Es necesario un correo válido.',
+                  message:
+                    'Es necesario al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
                 },
               })}
             />
           </label>
+
+          {errors?.email && <ErrorMessage msg={errors?.email.message} />}
 
           <label className="input input-bordered flex items-center gap-2 w-full bg-white">
             <svg
@@ -268,7 +192,7 @@ export default function Page() {
                   value:
                     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
                   message:
-                    'Son necesarios mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+                    'Es necesario al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
                 },
               })}
             />
@@ -276,59 +200,11 @@ export default function Page() {
 
           {errors?.password && <ErrorMessage msg={errors?.password.message} />}
 
-          <label className="input input-bordered flex items-center gap-2 w-full bg-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input
-              type="password"
-              className="grow"
-              placeholder="Vuelve a escribir la contraseña"
-              {...register('confirmPassword', {
-                required: 'Es necesario volver a escribir la contraseña.',
-                validate: (val) => {
-                  if (watch('password') != val) {
-                    return 'La contraseña no coincide.';
-                  }
-                },
-              })}
-            />
-          </label>
-
-          {errors?.confirmPassword && (
-            <ErrorMessage msg={errors?.confirmPassword.message} />
-          )}
-
-          <span className="text-center text-sm p-3">
-            Al crear la cuenta usted acepta los{' '}
-            <Link
-              className="text-purple-300"
-              href={'#'}
-            >
-              Términos y Condiciones
-            </Link>{' '}
-            y la{' '}
-            <Link
-              className="text-purple-300"
-              href={'#'}
-            >
-              Privacidad
-            </Link>
-          </span>
           <button
             className="btn w-40 bg-purple-600 uppercase text-white"
             type="submit"
           >
-            Crear cuenta
+            Inicia sesión
           </button>
         </form>
 
@@ -342,7 +218,7 @@ export default function Page() {
         <button
           type="button"
           class="mb-3 py-2 px-4 flex justify-center items-center relative *:hover:absolute *:hover:start-1/2 *:hover:transform *:hover:-translate-x-1/2  *:hover:ease-in *:hover:duration-200 hover:bg-purple-600 hover:text-purple-600 transition ease-in duration-200 text-center text-purple-600 text-base font-semibold border border-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-xl border-3 w-80"
-          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+          onClick={() => signIn('google')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -381,15 +257,15 @@ export default function Page() {
               fill="#4285f4"
             />
           </svg>
-          Crea cuenta con Google
+          Inicia sesión con Google
         </button>
         <p className="text-center text-sm p-3">
-          ¿Ya tienes una cuenta?{' '}
+          ¿No tienes una cuenta?{' '}
           <Link
             className="text-purple-300"
-            href={'#'}
+            href={'/registro'}
           >
-            Inicia sesión
+            Crea una
           </Link>
         </p>
       </main>
