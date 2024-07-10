@@ -1,10 +1,12 @@
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import API from '@/services/API';
+import MyAdapter from '@/services/db/adapter';
 
-export default NextAuth({
+export const authOptions = {
+  adapter: MyAdapter(),
   providers: [
+    // Proveedor de Google para iniciar sesión
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
@@ -18,6 +20,7 @@ export default NextAuth({
         };
       },
     }),
+    // Proveedor de Credenciales para iniciar sesión con correo y contraseña
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -32,6 +35,7 @@ export default NextAuth({
         try {
           const { email, password } = credentials;
 
+          // Aquí debes autenticar al usuario. Asegúrate de definir `API` correctamente.
           const user = await API.authenticateUser({ email, password });
 
           if (user) {
@@ -46,47 +50,74 @@ export default NextAuth({
       },
     }),
   ],
+  // Configura las páginas personalizadas de NextAuth
   pages: {
-    /*signIn: '/login',
-    signOut: '/',*/
-    error: '/registro',
+    error: '/registro', // Página personalizada para errores de autenticación
+    signIn: '/login',
   },
   callbacks: {
+    // Callback para agregar el token JWT a la sesión
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.token;
       }
       return token;
     },
+    // Callback para agregar el token de sesión
     async session({ session, token }) {
       if (session) {
         session.accessToken = token.accessToken;
-        console.log(session.accessToken);
+        console.log(session.accessToken); // Esto puede ser eliminado en producción
       }
       return session;
     },
-    async signIn({ profile, credentials }) {
-      if (credentials) {
-        return true;
-      } else if (profile) {
+    // Callback para manejar el inicio de sesión
+    async signIn({ profile, account }) {
+      if (account.provider === 'google') {
         try {
-          const user = await API.findUserByGoogleId(profile.id);
+          const user = await authOptions.adapter.createUser({
+            first_name: profile.given_name,
+            last_name: profile.family_name,
+            email: profile.email,
+            role: '6676ee2f23f3b664bbf5f50c',
+            googleToken: account.access_token,
+          });
 
-          if (!user) {
-            const data = {
-              first_name: profile.given_name,
-              last_name: profile.family_name,
-              email: profile.email,
-              // Profesor role
-              role: '6676ee3c23f3b664bbf5f50d',
-              googleId: profile.id,
-              googleToken: profile.access_token,
-              password: 'gr3at@3wdsGz',
-            };
-
-            await API.createNewUser(data);
+          if (user) {
+            return user;
           } else {
-            await API.updateUserGoogleInfo(profile.id, profile.access_token);
+            return null;
+          }
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+        /*  // Verifica si el usuario ya existe en la base de datos usando Prisma
+          let existingUser = await prisma.user.findUnique({
+            where: { googleId: profile.id },
+          });
+
+          if (!existingUser) {
+            // Crea un nuevo usuario si no existe usando Prisma
+            await prisma.user.create({
+              data: {
+                first_name: profile.given_name,
+                last_name: profile.family_name,
+                email: profile.email,
+                role: '6676ee2f23f3b664bbf5f50c',
+                googleId: profile.id,
+                googleToken: account.access_token,
+              },
+            });
+          } else {
+            // Actualiza la información del usuario si ya existe usando Prisma
+            await prisma.user.update({
+              where: { googleId: profile.id },
+              data: {
+                googleToken: account.access_token,
+                updatedAt: new Date(),
+              },
+            });
           }
 
           return true;
@@ -95,8 +126,12 @@ export default NextAuth({
           return false;
         }
       }
-      return false;
+    }*/
+      }
+      return true;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);
