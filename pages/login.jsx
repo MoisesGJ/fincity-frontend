@@ -1,9 +1,9 @@
 import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
 
-import { signIn } from 'next-auth/react';
-
 import { useForm } from 'react-hook-form';
+
+import { signIn } from 'next-auth/react';
 
 import ErrorMessage from '../components/ErrorMessage';
 import { useEffect } from 'react';
@@ -14,8 +14,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useRouter } from 'next/navigation';
 
-import { useSession, getSession } from 'next-auth/react';
-
 const chakra = Chakra_Petch({
   subsets: ['latin'],
   weight: ['300', '400', '600'],
@@ -23,7 +21,6 @@ const chakra = Chakra_Petch({
 
 export default function Page() {
   const router = useRouter();
-  const { data: session, status } = useSession();
 
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
@@ -56,18 +53,6 @@ export default function Page() {
       theme: 'colored',
       transition: Zoom,
     });
-
-  useEffect(() => {
-    if (error) notify();
-  }, [searchParams]);
-
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  if (status === 'authenticated') {
-    return router.push('/dashboard');
-  }
 
   return (
     <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">

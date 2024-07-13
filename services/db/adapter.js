@@ -1,60 +1,54 @@
-import db from '@/services/db/mongo';
+import API from '@/services/API';
 
-export default function MyAdapter(client, options = {}) {
+export default function MyAdapter() {
   return {
     async createUser(user) {
-      const usersCollection = await db.collection('users');
+      const existsUser = await API.getAccountByEmail(user.email);
 
-      // Verificar si el usuario ya existe por email
-      const existingUser = await usersCollection.findOne({ email: user.email });
+      if (existsUser) throw new Error('User exists');
 
-      if (existingUser) {
-        // Si el usuario ya existe, devolver el usuario existente
-        return existingUser;
-      }
+      const response = await API.createNewUser(user);
 
-      // Si el usuario no existe, crear uno nuevo
-      const newUser = await usersCollection.insertOne(user);
-      return newUser.data;
+      return {
+        id: response._doc._id,
+        email: response._doc.email,
+        first_name: response._doc.first_name,
+        last_name: response._doc.last_name,
+        role: response._doc.role,
+      };
     },
     async getUser(id) {
-      return;
+      const user = await API.getAccountById(email);
+      return user;
     },
     async getUserByEmail(email) {
-      return;
+      const user = await API.getAccountByEmail(email);
+      return user;
     },
     async getUserByAccount({ providerAccountId, provider }) {
-      return;
+      return null;
     },
     async updateUser(user) {
-      return;
+      return null;
     },
     async deleteUser(userId) {
-      return;
+      return null;
     },
     async linkAccount(account) {
-      return;
+      const { userId, access_token } = account;
+
+      const accountUpdated = await API.updatedUser(userId, access_token);
+
+      return { accountUpdated, ...account };
     },
     async unlinkAccount({ providerAccountId, provider }) {
-      return;
-    },
-    async createSession({ sessionToken, userId, expires }) {
-      return;
-    },
-    async getSessionAndUser(sessionToken) {
-      return;
-    },
-    async updateSession({ sessionToken }) {
-      return;
-    },
-    async deleteSession(sessionToken) {
-      return;
+      return null;
     },
     async createVerificationToken({ identifier, expires, token }) {
-      return;
+      return null;
     },
     async useVerificationToken({ identifier, token }) {
-      return;
+      return null;
     },
   };
 }

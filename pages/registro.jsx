@@ -34,33 +34,25 @@ export default function Page() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    try {
-      delete data?.confirmPassword;
-      const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
+    delete data?.confirmPassword;
+    const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
 
-      const signUpRes = await API.createNewUser(user);
+    const userExists = await API.getAccountByEmail(user.email);
 
-      if (signUpRes?.message === 'Success') {
-        const resAuth = await signIn('credentials', {
-          email: signUpRes?.data.email,
-          password: user.password,
-          redirect: false,
-        });
+    if (userExists) throw new Error('User exists');
 
-        if (resAuth?.ok) {
-          return router.push('/dashboard');
-        }
+    const resAuth = await signIn('credentials', {
+      email: user.email,
+      password: user.password,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      role: user.role,
+      redirect: false,
+    });
 
-        if (resAuth?.error) {
-          notify(resAuth.error.message || resAuth.error.toString());
-          reset();
-        }
-      } else {
-        notify(signUpRes?.message);
-        reset();
-      }
-    } catch (e) {
-      notify(e.message || e.toString());
+    if (resAuth.ok) return router.push('/dashboard');
+    else if (resAuth?.error) {
+      notify(resAuth.error.message || resAuth.error.toString());
       reset();
     }
   };
@@ -240,6 +232,8 @@ export default function Page() {
               })}
             />
           </label>
+
+          {errors?.email && <ErrorMessage msg={errors?.email.message} />}
 
           <label className="input input-bordered flex items-center gap-2 w-full bg-white">
             <svg
