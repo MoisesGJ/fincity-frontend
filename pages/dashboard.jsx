@@ -1,25 +1,31 @@
-import { useEffect } from 'react';
-import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
-export default function Page() {
-  const router = useRouter();
+const SessionComponent = () => {
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/');
-    }
-  }, [status, router]);
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
 
-  if (status === 'authenticated') {
+  if (session) {
     return (
-      <>
-        <p>Signed in as {session.user.email}</p>
-        <button onClick={signOut}>Cerrar sesión</button>
-      </>
+      <div>
+        <p>
+          Welcome, {session.user.first_name} {session.user.last_name}!
+        </p>
+        <p>Your Google ID: {session.user.googleId}</p>
+        <p>Your Role: {session.user.role}</p>
+        <button onClick={() => signOut()}>Sign Out</button>
+      </div>
     );
   }
 
-  return <p>Loading...</p>;
-}
+  return (
+    <div>
+      <p>You are not signed in</p>
+      <button onClick={() => signIn()}>Sign In</button>
+    </div>
+  );
+};
+
+export default SessionComponent;
