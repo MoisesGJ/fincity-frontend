@@ -1,3 +1,5 @@
+import { useSession, getSession } from 'next-auth/react';
+
 import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
 
@@ -13,6 +15,7 @@ import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useRouter } from 'next/navigation';
+import Loading from '@/components/LoadingPage';
 
 const chakra = Chakra_Petch({
   subsets: ['latin'],
@@ -21,28 +24,41 @@ const chakra = Chakra_Petch({
 
 export default function Page() {
   const router = useRouter();
-
-  const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  const { data: session, status } = useSession();
 
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm();
 
   const onSubmit = async ({ email, password }) => {
-    const res = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
+    return new Promise(() => {
+      setTimeout(async () => {
+        const res = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+        });
+
+        if (res.ok) return router.push('/dashboard');
+        else {
+          notify(res.error.message || res.error.toString());
+          reset();
+        }
+      }, 1000);
     });
   };
 
-  const notify = () =>
-    toast.error(error, {
+  const searchParams = useSearchParams();
+
+  const error = searchParams.get('error');
+  const token = searchParams.get('token');
+
+  const notify = (msg) =>
+    toast.error(msg, {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -54,8 +70,22 @@ export default function Page() {
       transition: Zoom,
     });
 
+  useEffect(() => {
+    if (error) setTimeout(() => notify(error), 1000);
+    if (token) window.localStorage.setItem('emailValidate', token);
+  }, [error, token]);
+
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (status === 'authenticated') {
+    return router.push('/dashboard');
+  }
+
   return (
     <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+      {isSubmitting && <Loading />}
       <div className="relative xl:w-1/2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +142,7 @@ export default function Page() {
         className={`${chakra.className} mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
       >
         <div className="xl:max-w-lg xl:w-full text-center xl:text-start">
-          <h1 className="text-5xl font-bold xl:text-start">¡Bienvenido!</h1>
+          <h1 className="text-5xl font-bold xl:text-start">¡Bienvenidx!</h1>
           <h2 className="mt-3 text-base">Inicia sesión</h2>
         </div>
         <form

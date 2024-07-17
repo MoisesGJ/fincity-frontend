@@ -2,7 +2,6 @@ import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import MyAdapter from '@/services/db/adapter';
-import { signIn, signOut } from 'next-auth/react';
 import API from '@/services/API';
 
 export const authOptions = {
@@ -30,23 +29,31 @@ export const authOptions = {
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
-        firstName: { label: 'First Name', type: 'text' },
-        lastName: { label: 'Last Name', type: 'text' },
-        role: { label: 'Role', type: 'text' },
+        firstName: { label: 'First Name', type: 'text', optional: true },
+        lastName: { label: 'Last Name', type: 'text', optional: true },
+        role: { label: 'Role', type: 'text', optional: true },
       },
-      async authorize(credentials) {
-        const { email, password, firstName, lastName, role } = credentials;
-
-        const userExists = await API.getAccountByEmail(email);
+      async authorize(credentials, req) {
+        const userExists = await API.getAccountByEmail(credentials.email);
 
         if (userExists) {
-          const user = await API.authenticateUser({ email, password });
+          const user = await API.authenticateUser(
+            credentials.email,
+            credentials.password
+          );
+
           if (user) {
+            console.log(user);
             return user;
           } else {
-            return null;
+            throw new Error('Credenciales inválidas');
           }
         } else {
+          if (req.headers.referer.includes('/login')) {
+            throw new Error('Credenciales inválidas');
+          }
+
+          const { email, password, firstName, lastName, role } = credentials;
           const userCreated = await authOptions.adapter.createUser({
             email,
             password,
@@ -55,8 +62,7 @@ export const authOptions = {
             role,
           });
 
-          if (userCreated) return userCreated;
-          else return null;
+          return userCreated;
         }
       },
     }),
@@ -76,8 +82,9 @@ export const authOptions = {
         token.accessToken = user.token;
         token.first_name = user.first_name;
         token.last_name = user.last_name;
-        token.googleId = user.googleId;
         token.role = user.role;
+        token.emailVerified = user.emailVerified;
+        if (user.googleId) token.googleId = user.googleId;
       }
       return token;
     },
@@ -85,12 +92,18 @@ export const authOptions = {
       session.user.id = token.id;
       session.user.first_name = token.first_name;
       session.user.last_name = token.last_name;
-      session.user.googleId = token.googleId;
       session.user.role = token.role;
       session.accessToken = token.accessToken;
+      session.emailVerified = token.emailVerified;
+      if (token.googleId) session.user.googleId = token.googleId;
+
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
+      if (account.provider === 'credentials') {
+        return true;
+      }
+
       return true;
     },
   },

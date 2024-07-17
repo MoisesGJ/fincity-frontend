@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '@/components/LoadingPage';
 
 const chakra = Chakra_Petch({
   subsets: ['latin'],
@@ -28,33 +29,40 @@ export default function Page() {
   const {
     register,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm();
 
   const onSubmit = async (data) => {
-    delete data?.confirmPassword;
-    const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
+    return new Promise(() => {
+      setTimeout(async () => {
+        delete data?.confirmPassword;
+        const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
 
-    const userExists = await API.getAccountByEmail(user.email);
+        const userExists = await API.getAccountByEmail(user.email);
 
-    if (userExists) throw new Error('User exists');
+        if (userExists)
+          return router.push(
+            '/registro?error=El%20correo%20ya%20est%C3%A1%20vinculado%20a%20una%20cuenta'
+          );
 
-    const resAuth = await signIn('credentials', {
-      email: user.email,
-      password: user.password,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      role: user.role,
-      redirect: false,
+        const resAuth = await signIn('credentials', {
+          email: user.email,
+          password: user.password,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          role: user.role,
+          redirect: false,
+        });
+
+        if (resAuth.ok) return router.push('/dashboard');
+        else if (resAuth?.error) {
+          notify(resAuth.error.message || resAuth.error.toString());
+          reset();
+        }
+      }, 1000);
     });
-
-    if (resAuth.ok) return router.push('/dashboard');
-    else if (resAuth?.error) {
-      notify(resAuth.error.message || resAuth.error.toString());
-      reset();
-    }
   };
 
   const searchParams = useSearchParams();
@@ -87,7 +95,8 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen ">
+      {isSubmitting && <Loading />}
       <div className="relative xl:w-1/2">
         <svg
           xmlns="http://www.w3.org/2000/svg"

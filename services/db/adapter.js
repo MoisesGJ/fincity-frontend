@@ -5,16 +5,22 @@ export default function MyAdapter() {
     async createUser(user) {
       const existsUser = await API.getAccountByEmail(user.email);
 
-      if (existsUser) throw new Error('User exists');
+      if (existsUser) throw new Error('El usuario ya existe');
 
       const response = await API.createNewUser(user);
+
+      console.log(response);
+
+      await API.sendEmail(response._doc._id, response.token);
 
       return {
         id: response._doc._id,
         email: response._doc.email,
+        emailVerified: response._doc.emailVerified,
         first_name: response._doc.first_name,
         last_name: response._doc.last_name,
         role: response._doc.role,
+        //token: response._doc.token,
       };
     },
     async getUser(id) {
