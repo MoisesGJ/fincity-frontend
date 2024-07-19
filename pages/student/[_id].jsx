@@ -20,13 +20,43 @@ export default function Student() {
   //       });
   //   });
 
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([
+    {
+      _id: "6677345f23f3b664bbf5f530",
+      group: "667730f523f3b664bbf5f52c",
+      task_name: "Tender la cama",
+      value: 100,
+      times_per_week: 5,
+      description:
+        "El alumno debe tender la cama sin arrugas. En case de tener peluches o cosas sobre la cama deben estar ordenados",
+      status: true,
+    },
+    {
+      _id: "6677345f23f3b664bbf5f531",
+      group: "667730f523f3b664bbf5f52c",
+      task_name: "Lavar los trastes propios",
+      value: 50,
+      times_per_week: 2,
+      description: "El alumno debe lavar los trastes propios que utilice",
+      status: true,
+    },
+    {
+      _id: "6677345f23f3b664bbf5f532",
+      group: "667730f523f3b664bbf5f52c",
+      task_name: "Lavar los trastes",
+      value: 130,
+      times_per_week: 2,
+      description:
+        "El alumno debe lavar los trastes propios que utilice y los de otro integrante de la familia",
+      status: true,
+    },
+  ]);
 
-  useEffect(() => {
-    fetch("http://localhost:3002/tasks")
-      .then((res) => res.json())
-      .then((data) => setTasks(data.data));
-  });
+  // useEffect(() => {
+  //   fetch("http://localhost:3002/tasks")
+  //     .then((res) => res.json())
+  //     .then((data) => setTasks(data.tasks));
+  // });
   return (
     <main className="bg-[#5D269A] min-h-screen lg:p-20 text-black min-w-full grid place-items-center lg:min-h-full lg:min-w-max">
       <div className="bg-[#F0E6FE] w-[302px] h-[725px] rounded-3xl p-8 border-6 border-[#8037D9] drop-shadow-2xl shadow-[#360D5E] lg:w-[1278px] lg:h-[853px] lg:p-10 md:w-[645px] md:h-[1029px]">
