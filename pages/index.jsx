@@ -1,6 +1,16 @@
-import Image from 'next/image';
+'use client';
+
 import { Chakra_Petch } from 'next/font/google';
-import Card_1 from '../components/Card_1';
+// Import Images
+import Image from 'next/image';
+import skullCrasher from '../assets/characters/Skullcrasher.webp';
+import listIcon from '../assets/icons/list-icon.webp';
+import pigIcon from '../assets/icons/pig-icon.webp';
+import cartIcon from '../assets/icons/cart-icon.webp';
+import tasksIcon from '../assets/icons/tasks-icon.webp';
+// Import Components
+import LandingPageCard from '../components/LandingPageCard';
+import Link from 'next/link';
 
 const chakra = Chakra_Petch({
   subsets: ['latin'],
@@ -14,7 +24,7 @@ export default function Home() {
         <nav></nav>
       </header>
       <main className={chakra.className}>
-        <section className="bg-white">
+        <section className="bg-zinc-50">
           <div className="relative bg-none">
             <div className="container mx-auto px-4 text-center py-24">
               <h1 className="text-gray-900 font-chakra text-2xl font-normal leading-9 mt-24">
@@ -194,90 +204,137 @@ export default function Home() {
             </div>
           </section>
         </section>
+        {/* Angel */}
         <section className="bg-zinc-50 flex flex-col">
-          <div className=" text-center justify-center align-middle p-6">
-            <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-3">
-              ¿Qué nos hace diferentes?
-            </h3>
-            <p className="text-[#09090b] text-base leading-[15px] p-3">
-              Nos esforzamos por ofrecer una experiencia en línea que sea tanto
-              educativa como divertida para los niños. Creemos en empoderar a
-              los niños con el conocimiento necesario para tomar decisiones
-              financieras inteligentes, desde ahorrar dinero para alcanzar metas
-              hasta entender la importancia de un balance entre diversión y
-              obligación
-            </p>
-          </div>
-          <div className="text-center justify-center align-middle p-6 flex flex-col gap-8">
-            <div>
-              <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-1">
-                ¿Cómo funciona?
+          <div>
+            <div className=" text-center justify-center align-middle p-6">
+              <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-3">
+                ¿Qué nos hace diferentes?
               </h3>
-              <p className="text-[#09090b] text-base leading-[15px] p-1">
-                ¡Es simple!
+              <p className="text-[#09090b] text-base leading-[15px] p-3">
+                Nos esforzamos por ofrecer una experiencia en línea que sea
+                tanto educativa como divertida para los niños. Creemos en
+                empoderar a los niños con el conocimiento necesario para tomar
+                decisiones financieras inteligentes, desde ahorrar dinero para
+                alcanzar metas hasta entender la importancia de un balance entre
+                diversión y obligación
               </p>
             </div>
+            <Image
+              src={skullCrasher}
+              className="hidden md:block md:justify-center md:align-middle md:m-auto"
+              alt="Skullcrasher"
+            ></Image>
 
-            <div className="carousel w-full">
-              <div
-                id="item1"
-                className="carousel-item w-full"
-              >
-                <Card_1
-                  title="Seguimiento de Tareas y Ganancias 1"
-                  content="Los padres pueden marcar las tareas completadas a medida que las realizan. Cada tarea completada les otorga una cantidad específica de dinero virtual, que se acumula en su cuenta."
-                ></Card_1>
-              </div>
-              <div
-                id="item2"
-                className="carousel-item w-full"
-              >
-                <Card_1
-                  title="Asignación de Tareas: "
-                  content="El maestro en conjunto con los padres pueden asignar tareas domésticas a sus hijos directamente a través de la aplicación. Desde hacer la cama hasta ayudar con la limpieza, las tareas se pueden personalizar según las necesidades y la edad del niño."
-                ></Card_1>
-              </div>
-              <div
-                id="item3"
-                className="carousel-item w-full"
-              >
-                <Card_1
-                  title="Canje de Recompensas:"
-                  content="Cuando los niños hayan alcanzado suficiente dinero, ¡pueden canjearlo por recompensas emocionantes! Las opciones de recompensas son personalizables y están diseñadas para motivar y reforzar el comportamiento positivo."
-                ></Card_1>
-              </div>
-            </div>
-            <div className="flex justify-center w-full py-2 gap-2">
-              <a
-                href="#item1"
-                className="btn btn-xs"
-              >
-                1
-              </a>
-              <a
-                href="#item2"
-                className="btn btn-xs"
-              >
-                2
-              </a>
-              <a
-                href="#item3"
-                className="btn btn-xs"
-              >
-                3
-              </a>
+            <div className="bg-purple-200">
+              {/* Aquí se supone van unas ondas*/}
             </div>
           </div>
-          <div className="text-center justify-center align-middle p-6 flex flex-col gap-8">
-            <p className="text-[#09090b] text-base leading-[15px] p-1">
-              A través de esta experiencia, los niños aprenden sobre la
-              importancia del trabajo duro, la responsabilidad y la gestión del
-              dinero de una manera práctica y divertida. Además, pueden
-              desarrollar habilidades de planificación y toma de decisiones
-              mientras administran sus ganancias y eligen cómo gastarlas.
-            </p>
+          <div className="bg-purple-200">
+            <div className="text-center justify-center align-middle p-6 flex flex-col gap-8">
+              <div>
+                <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-1">
+                  ¿Cómo funciona?
+                </h3>
+                <p className="text-[#09090b] text-base leading-[15px] p-1">
+                  ¡Es simple!
+                </p>
+              </div>
+              <div className="md:hidden">
+                <div className="carousel w-full">
+                  <div
+                    id="item1"
+                    className="carousel-item w-full"
+                  >
+                    <LandingPageCard
+                      icon={tasksIcon}
+                      title="Seguimiento de Tareas y Ganancias"
+                      content="Los padres pueden marcar las tareas completadas a medida que las realizan. Cada tarea completada les otorga una cantidad específica de dinero virtual, que se acumula en su cuenta."
+                    ></LandingPageCard>
+                  </div>
+                  <div
+                    id="item2"
+                    className="carousel-item w-full"
+                  >
+                    <LandingPageCard
+                      icon={listIcon}
+                      title="Asignación de Tareas: "
+                      content="El maestro en conjunto con los padres pueden asignar tareas domésticas a sus hijos directamente a través de la aplicación. Desde hacer la cama hasta ayudar con la limpieza, las tareas se pueden personalizar según las necesidades y la edad del niño."
+                    ></LandingPageCard>
+                  </div>
+                  <div
+                    id="item3"
+                    className="carousel-item w-full"
+                  >
+                    <LandingPageCard
+                      icon={cartIcon}
+                      title="Canje de Recompensas:"
+                      content="Cuando los niños hayan alcanzado suficiente dinero, ¡pueden canjearlo por recompensas emocionantes! Las opciones de recompensas son personalizables y están diseñadas para motivar y reforzar el comportamiento positivo."
+                    ></LandingPageCard>
+                  </div>
+                </div>
+                <div className="flex justify-center w-full py-2 gap-2">
+                  <a
+                    href="#item1"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
+                    1
+                  </a>
+                  <a
+                    href="#item2"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
+                    2
+                  </a>
+                  <a
+                    href="#item3"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
+                    3
+                  </a>
+                </div>
+              </div>
+              <div className="hidden md:block">
+                <div className="flex flex-row gap-2 h-96">
+                  <div className="w-2/6 h-80">
+                    <LandingPageCard
+                      icon={pigIcon}
+                      title="Seguimiento de Tareas y Ganancias"
+                      content="Los padres pueden marcar las tareas completadas a medida que las realizan. Cada tarea completada les otorga una cantidad específica de dinero virtual, que se acumula en su cuenta."
+                    ></LandingPageCard>
+                  </div>
+                  <div className="w-2/6 h-80">
+                    <LandingPageCard
+                      icon={listIcon}
+                      title="Asignación de Tareas: "
+                      content="El maestro en conjunto con los padres pueden asignar tareas domésticas a sus hijos directamente a través de la aplicación. Desde hacer la cama hasta ayudar con la limpieza, las tareas se pueden personalizar según las necesidades y la edad del niño."
+                    ></LandingPageCard>
+                  </div>
+                  <div className="w-2/6 h-80">
+                    <LandingPageCard
+                      icon={cartIcon}
+                      title="Canje de Recompensas:"
+                      content="Cuando los niños hayan alcanzado suficiente dinero, ¡pueden canjearlo por recompensas emocionantes! Las opciones de recompensas son personalizables y están diseñadas para motivar y reforzar el comportamiento positivo."
+                    ></LandingPageCard>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="text-center justify-center align-middle p-6 flex flex-col gap-8 pb-36">
+              <p className="text-[#09090b] text-base leading-[15px] p-1">
+                A través de esta experiencia, los niños aprenden sobre la
+                importancia del trabajo duro, la responsabilidad y la gestión
+                del dinero de una manera práctica y divertida. Además, pueden
+                desarrollar habilidades de planificación y toma de decisiones
+                mientras administran sus ganancias y eligen cómo gastarlas.
+              </p>
+            </div>
+            <div className="bg-[#5D269A]">
+              {/* Aquí se supone van unas ondas*/}
+            </div>
           </div>
         </section>
+        {/* Termina Angel */}
         <section className="text-[#09090b] relative min-h-96 flex flex-col justify-center items-center gap-6 text-center p-8 bg-[#5D269A]">
           <div className="absolute inset-0 overflow-hidden">
             <svg
@@ -368,9 +425,11 @@ export default function Home() {
             brillante para tus hijos y hacer que el aprendizaje sea una
             experiencia emocionante para toda la familia!
           </p>
-          <button className="relative font-bold bg-white text-gray-950 px-5 py-2 rounded-3xl mb-10">
-            Regístrate
-          </button>
+          <Link href={'/registro'}>
+            <button className="relative font-bold bg-white text-gray-950 px-5 py-2 rounded-3xl mb-10">
+              Regístrate
+            </button>
+          </Link>
         </section>
       </main>
 
