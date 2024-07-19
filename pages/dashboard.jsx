@@ -42,7 +42,9 @@ const SessionComponent = () => {
         </p>
         <p>Your Google ID: {session.emailVerified}</p>
         <p>Your Role: {session.user.role}</p>
-        <button onClick={() => signOut()}>Sign Out</button>
+        <button onClick={() => signOut({ callbackUrl: '/login' })}>
+          Sign Out
+        </button>
       </div>
     );
   }

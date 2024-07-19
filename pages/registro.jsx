@@ -25,44 +25,53 @@ const chakra = Chakra_Petch({
 export default function Page() {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
 
   const onSubmit = async (data) => {
-    return new Promise(() => {
-      setTimeout(async () => {
-        delete data?.confirmPassword;
-        const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
+    setLoader(true);
+    delete data?.confirmPassword;
+    const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
 
-        const userExists = await API.getAccountByEmail(user.email);
+    try {
+      const userExists = await API.getAccountByEmail(user.email);
 
-        if (userExists)
-          return router.push(
-            '/registro?error=El%20correo%20ya%20est%C3%A1%20vinculado%20a%20una%20cuenta'
-          );
+      if (userExists) {
+        router.push(
+          '/registro?error=El%20correo%20ya%20est%C3%A1%20vinculado%20a%20una%20cuenta'
+        );
+        return;
+      }
 
-        const resAuth = await signIn('credentials', {
-          email: user.email,
-          password: user.password,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          role: user.role,
-          redirect: false,
-        });
+      const resAuth = await signIn('credentials', {
+        email: user.email,
+        password: user.password,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        redirect: false,
+      });
 
-        if (resAuth.ok) return router.push('/dashboard');
-        else if (resAuth?.error) {
-          notify(resAuth.error.message || resAuth.error.toString());
-          reset();
-        }
-      }, 1000);
-    });
+      if (resAuth.ok) {
+        router.push('/dashboard');
+      } else {
+        reset();
+        notify(resAuth.error.message || resAuth.error.toString());
+      }
+    } catch (error) {
+      notify('Ocurrió un error durante la autenticación');
+    } finally {
+      setTimeout(() => {
+        setLoader(false);
+      }, 2000);
+    }
   };
 
   const searchParams = useSearchParams();
@@ -95,8 +104,8 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen ">
-      {isSubmitting && <Loading />}
+    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+      {loader && <Loading />}
       <div className="relative xl:w-1/2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -390,7 +399,7 @@ export default function Page() {
           ¿Ya tienes una cuenta?{' '}
           <Link
             className="text-purple-300"
-            href={'#'}
+            href={'/login'}
           >
             Inicia sesión
           </Link>

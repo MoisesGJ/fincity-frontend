@@ -6,6 +6,14 @@ import { useEffect, useState } from 'react';
 import Email from '@/components/EmailVerify/';
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 
+import { Chakra_Petch } from 'next/font/google';
+import Link from 'next/link';
+
+const chakra = Chakra_Petch({
+  subsets: ['latin'],
+  weight: ['300', '400', '600'],
+});
+
 export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -79,7 +87,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className={chakra.className}>
       {loader && (
         <div
           role="status"
@@ -110,6 +118,15 @@ export default function Page() {
         email={email}
         sendEmail={handlerSendEmail}
       />
-    </>
+      <h6 className="absolute text-center w-full bottom-5 start-1/2 transition -translate-x-1/2 text-xs text-purple-900 md:text-white">
+        Si aún nececitas ayuda, envíanos un correo a{' '}
+        <Link
+          className="underline"
+          href={'mailto:admin@fincity.com'}
+        >
+          admin@fincity.com
+        </Link>
+      </h6>
+    </div>
   );
 }

@@ -43,7 +43,6 @@ export const authOptions = {
           );
 
           if (user) {
-            console.log(user);
             return user;
           } else {
             throw new Error('Credenciales inválidas');
@@ -84,7 +83,6 @@ export const authOptions = {
         token.last_name = user.last_name;
         token.role = user.role;
         token.emailVerified = user.emailVerified;
-        if (user.googleId) token.googleId = user.googleId;
       }
       return token;
     },
@@ -95,12 +93,13 @@ export const authOptions = {
       session.user.role = token.role;
       session.accessToken = token.accessToken;
       session.emailVerified = token.emailVerified;
-      if (token.googleId) session.user.googleId = token.googleId;
 
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
       if (account.provider === 'credentials') {
+        await API.sendEmail(user.id, user.token);
+
         return true;
       }
 

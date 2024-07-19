@@ -21,19 +21,16 @@ const API = {
 
     if (!response.ok) throw new Error(response.error.message);
 
-    console.log(response.data.user);
-
     return response.data.user;
   },
 
-  async updatedUser(id, partialData) {
-    const r = await fetch(`${BASE_URI}/users/${id}`, {
+  async updatedUser(id, partialData, auth) {
+    const r = await fetch(`${BASE_URI}/users/google/${id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: AUTH_HEADER(auth),
       body: JSON.stringify({
         googleId: partialData,
+        emailVerified: true,
       }),
     });
 
@@ -55,9 +52,9 @@ const API = {
 
     const response = await r.json();
 
-    if (!response.data) throw new Error(response.error.message);
+    if (response.error) return null;
 
-    return await response.data.userResponse;
+    return response.data.userResponse;
   },
 
   async getAccountById(id, auth) {
@@ -67,7 +64,7 @@ const API = {
 
     const response = await r.json();
 
-    if (!response.ok) throw new Error(response.error.message);
+    if (!response.ok) throw new Error(response.error);
 
     return response.data;
   },
@@ -95,9 +92,7 @@ const API = {
 
     const response = await r.json();
 
-    if (!response.ok) throw new Error(response.error.message);
-
-    return response.ok;
+    return response;
   },
 
   async validateAccountVerify(id) {
@@ -125,6 +120,16 @@ const API = {
     if (!response.ok) throw new Error(response.error.message);
 
     return response.data.emailId;
+  },
+
+  async findByAccessToken(accessToken) {
+    const r = await fetch(`${BASE_URI}/users/access-token/${accessToken}`, {});
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.data.user;
   },
 };
 

@@ -9,10 +9,6 @@ export default function MyAdapter() {
 
       const response = await API.createNewUser(user);
 
-      console.log(response);
-
-      await API.sendEmail(response._doc._id, response.token);
-
       return {
         id: response._doc._id,
         email: response._doc.email,
@@ -24,15 +20,19 @@ export default function MyAdapter() {
       };
     },
     async getUser(id) {
-      const user = await API.getAccountById(email);
+      const user = await API.getAccountById(id);
       return user;
     },
     async getUserByEmail(email) {
       const user = await API.getAccountByEmail(email);
       return user;
     },
-    async getUserByAccount({ providerAccountId, provider }) {
-      return null;
+    async getUserByAccount(account) {
+      const { providerAccountId } = account;
+
+      const user = await API.findByAccessToken(providerAccountId);
+
+      return user;
     },
     async updateUser(user) {
       return null;
@@ -41,9 +41,14 @@ export default function MyAdapter() {
       return null;
     },
     async linkAccount(account) {
-      const { userId, access_token } = account;
+      console.log(account);
+      const { userId, providerAccountId, access_token } = account;
 
-      const accountUpdated = await API.updatedUser(userId, access_token);
+      const accountUpdated = await API.updatedUser(
+        userId,
+        providerAccountId,
+        access_token
+      );
 
       return { accountUpdated, ...account };
     },

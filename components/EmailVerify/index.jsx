@@ -1,13 +1,6 @@
 import Link from 'next/link';
 import styles from './styles.module.css';
 
-import { Chakra_Petch } from 'next/font/google';
-
-const chakra = Chakra_Petch({
-  subsets: ['latin'],
-  weight: ['300', '400', '600'],
-});
-
 export default function Page({ logOut, email, sendEmail }) {
   const handlerChildrenLogOut = () => {
     logOut();
@@ -19,7 +12,7 @@ export default function Page({ logOut, email, sendEmail }) {
 
   return (
     <main
-      className={`${chakra.className} flex justify-center items-center w-full min-h-screen bg-slate-50 ${styles.bgPattern}`}
+      className={`flex justify-center items-center w-full min-h-screen bg-slate-50 ${styles.bgPattern}`}
     >
       <div className="bg-slate-50 rounded-xl flex flex-col items-center justify-around h-96 w-screen md:w-1/2">
         <div className="relative -top-16 md:-top-8">
@@ -46,18 +39,17 @@ export default function Page({ logOut, email, sendEmail }) {
             Te hemos enviado un correo a <i className="font-bold">{email}</i>{' '}
             para que puedas validar tu cuenta.
           </p>
-          <p>
-            Si no lo encuentras puedes buscar en la carpeta de spam y presiona
-            el link que te enviamos.
+          <p className="my-2">
+            Si no lo encuentras puedes buscar en la carpeta de spam o si tuviste
+            un error.
           </p>
           <p>
-            O da clic{' '}
             <Link
               href="#"
               className="underline"
               onClick={handlerChildrenSendEmail}
             >
-              aquí
+              Da clic aquí
             </Link>{' '}
             para que te enviemos otro.
           </p>
