@@ -1,9 +1,14 @@
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import MyAdapter from '@/services/db/adapter';
 import API from '@/services/API';
 
-export default NextAuth({
+export const authOptions = {
+  session: {
+    strategy: 'jwt',
+  },
+
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -14,89 +19,95 @@ export default NextAuth({
           email: profile.email,
           first_name: profile.given_name,
           last_name: profile.family_name,
-          googleId: profile.sub,
+          role: '6676ee2f23f3b664bbf5f50c',
+          password: 'gr3at@3wdsG',
         };
       },
     }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: {
-          type: 'email',
-        },
-        password: {
-          type: 'password',
-        },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+        firstName: { label: 'First Name', type: 'text', optional: true },
+        lastName: { label: 'Last Name', type: 'text', optional: true },
+        role: { label: 'Role', type: 'text', optional: true },
       },
-      async authorize(credentials) {
-        try {
-          const { email, password } = credentials;
+      async authorize(credentials, req) {
+        const userExists = await API.getAccountByEmail(credentials.email);
 
-          const user = await API.authenticateUser({ email, password });
+        if (userExists) {
+          const user = await API.authenticateUser(
+            credentials.email,
+            credentials.password
+          );
 
           if (user) {
-            return { id: user._id, token: user.token };
+            return user;
           } else {
-            return null;
+            throw new Error('Credenciales inválidas');
           }
-        } catch (error) {
-          console.error('Error during authentication:', error);
-          return null;
+        } else {
+          if (req.headers.referer.includes('/login')) {
+            throw new Error('Credenciales inválidas');
+          }
+
+          const { email, password, firstName, lastName, role } = credentials;
+          const userCreated = await authOptions.adapter.createUser({
+            email,
+            password,
+            first_name: firstName,
+            last_name: lastName,
+            role,
+          });
+
+          return userCreated;
         }
       },
     }),
   ],
+  jwt: {
+    encryption: true,
+  },
   pages: {
-    /*signIn: '/login',
-    signOut: '/',*/
+    signIn: '/login',
     error: '/registro',
+    signOut: '/',
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.accessToken = user.token;
+        token.first_name = user.first_name;
+        token.last_name = user.last_name;
+        token.role = user.role;
+        token.emailVerified = user.emailVerified;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session) {
-        session.accessToken = token.accessToken;
-        console.log(session.accessToken);
-      }
+      session.user.id = token.id;
+      session.user.first_name = token.first_name;
+      session.user.last_name = token.last_name;
+      session.user.role = token.role;
+      session.accessToken = token.accessToken;
+      session.emailVerified = token.emailVerified;
+
       return session;
     },
-    async signIn({ profile, credentials }) {
-      if (credentials) {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (account.provider === 'credentials') {
+        await API.sendEmail(user.id, user.token);
+
         return true;
-      } else if (profile) {
-        try {
-          const user = await API.findUserByGoogleId(profile.id);
-
-          if (!user) {
-            const data = {
-              first_name: profile.given_name,
-              last_name: profile.family_name,
-              email: profile.email,
-              // Profesor role
-              role: '6676ee3c23f3b664bbf5f50d',
-              googleId: profile.id,
-              googleToken: profile.access_token,
-              password: 'gr3at@3wdsGz',
-            };
-
-            await API.createNewUser(data);
-          } else {
-            await API.updateUserGoogleInfo(profile.id, profile.access_token);
-          }
-
-          return true;
-        } catch (e) {
-          console.error('Error handling Google sign-in:', e);
-          return false;
-        }
       }
-      return false;
+
+      return true;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+  adapter: MyAdapter(),
+};
+
+export default NextAuth(authOptions);
