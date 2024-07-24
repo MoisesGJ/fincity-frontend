@@ -37,14 +37,14 @@ export default function Home() {
           </Link>
         </nav>
       </header>
-      <main className={chakra.className}>
+      <main>
         <section className="bg-zinc-50">
           <div className="relative bg-none">
             <div className="container mx-auto px-4 text-center py-24">
-              <h1 className="text-gray-900 font-chakra text-4xl font-normal leading-9 mt-24">
+              <h1 className="text-gray-900 text-4xl font-normal leading-9 mt-24">
                 Ampliando los horizontes financieros de tus hijos
               </h1>
-              <p className="text-gray-1000 font-chakra text-xl font-normal leading-10 opacity-100 mt-4">
+              <p className="text-gray-1000 text-xl font-normal leading-10 opacity-100 mt-4">
                 Creamos contenido y actividades para que tus hijos aprendan a
                 tener independencia financiera desde temprana edad de una manera
                 didáctica y divertida
@@ -55,10 +55,10 @@ export default function Home() {
         </section>
         <section className="container mx-auto px-4 py-8 flex flex-wrap justify-between">
           <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center mb-6 w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black font-chakra text-lg font-medium mb-3">
+            <h2 className="text-center text-black text-lg font-medium mb-3">
               Para los maestros
             </h2>
-            <p className="text-center text-gray-700 font-chakra text-base font-normal leading-6">
+            <p className="text-center text-gray-700 text-base font-normal leading-6">
               Ofrecemos a los educadores una variedad de recursos y herramientas
               para apoyar su enseñanza de educación financiera en el aula. Nos
               esforzamos por ser un recurso integral para educadores que desean
@@ -66,10 +66,10 @@ export default function Home() {
             </p>
           </div>
           <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black font-chakra text-lg font-medium mb-3">
+            <h2 className="text-center text-black text-lg font-medium mb-3">
               Para los estudiantes
             </h2>
-            <p className="text-center text-gray-700 font-chakra text-base font-normal leading-6">
+            <p className="text-center text-gray-700 text-base font-normal leading-6">
               Los niños pueden aprender sobre el mundo de las finanzas de una
               manera divertida y accesible. Desde entender el valor del dinero
               hasta aprender a ahorrar y gastar de manera inteligente, el
@@ -306,7 +306,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={`${chakra.className} bg-[#5D269A] relative`}>
+      <footer className={`bg-[#5D269A] relative`}>
         <section className="p-5 pb-10 flex flex-col gap-3 text-xs">
           <h3 className="font-bold">Explora</h3>
           <Link href="/">Home</Link>
