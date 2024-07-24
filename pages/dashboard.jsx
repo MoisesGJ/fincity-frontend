@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import CreateGroup from '@/components/Dashboard/CreateGroup';
 import StudentsFile from '@/components/Dashboard/StudentsFile';
+import { signOut } from 'next-auth/react';
 
 function Dashboard() {
   return (
