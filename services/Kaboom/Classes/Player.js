@@ -1,5 +1,6 @@
 import { scaleFactor } from '@/services/Kaboom/constants';
 import { displayDialogue } from '@/services/Kaboom/utils';
+import { signOut } from 'next-auth/react';
 
 export default class Player {
   constructor(kaboomInstance, refs) {
@@ -42,17 +43,21 @@ export default class Player {
         for (const boundary of layer.objects) {
           if (boundary.name) {
             this.player.onCollide(boundary.name, () => {
-              this.player.isInDialogue = true;
-              const cleanupDialogue = displayDialogue(
-                boundary.name,
-                () => {
-                  this.player.isInDialogue = false;
-                  if (typeof cleanupDialogue === 'function') {
-                    cleanupDialogue();
-                  }
-                },
-                this.refs
-              );
+              if (boundary.name === 'exit') {
+                signOut();
+              } else {
+                this.player.isInDialogue = true;
+                const cleanupDialogue = displayDialogue(
+                  boundary.name,
+                  () => {
+                    this.player.isInDialogue = false;
+                    if (typeof cleanupDialogue === 'function') {
+                      cleanupDialogue();
+                    }
+                  },
+                  this.refs
+                );
+              }
             });
           }
         }

@@ -61,7 +61,6 @@ export default function Game({ session }) {
           <p className="text-gray-200 select-none absolute left-5 top-[1vh] flex flex-col">
             ¡Hola, {session.first_name}!
           </p>
-
           <div
             id="textbox-container"
             className="hidden"

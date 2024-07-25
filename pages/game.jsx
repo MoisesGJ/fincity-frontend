@@ -22,7 +22,11 @@ export default function Home() {
   }
 
   if (status === 'authenticated') {
-    return <Game session={session.user} />;
+    return (
+      <div className="min-h-screen w-screen">
+        <Game session={session.user} />
+      </div>
+    );
   }
 
   return null;
