@@ -43,7 +43,9 @@ export default function UserLogin({ changeUser, handleNotify }) {
         className={`mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
       >
         <div className="xl:max-w-lg xl:w-full text-center xl:text-start">
-          <h1 className="text-5xl font-bold xl:text-start">¡Bienvenidx!</h1>
+          <h1 className="text-5xl font-bold xl:text-start animate-bounceOnce">
+            ¡Bienvenidx!
+          </h1>
           <h2 className="mt-3 text-base">Inicia sesión</h2>
         </div>
         <form
