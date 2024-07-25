@@ -18,11 +18,11 @@ export default function UserLogin({ changeUser, handleNotify }) {
     reset,
   } = useForm();
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async ({ user, password }) => {
     return new Promise(() => {
       setTimeout(async () => {
         const res = await signIn('students', {
-          email,
+          user,
           password,
           redirect: false,
         });
@@ -66,22 +66,22 @@ export default function UserLogin({ changeUser, handleNotify }) {
             <input
               type="text"
               className="grow"
-              placeholder="Correo electrónico"
-              {...register('email', {
-                required: 'El correo electrónico es necesario.',
+              placeholder="Usuario"
+              {...register('user', {
+                required: 'El usuario es necesario.',
                 minLength: {
-                  value: 8,
+                  value: 6,
                   message: 'Se nececitan mínimo 8 caracteres.',
                 },
-                pattern: {
+                /*pattern: {
                   value: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
                   message: 'Es necesario un correo válido.',
-                },
+                },*/
               })}
             />
           </label>
 
-          {errors?.email && <ErrorMessage msg={errors?.email.message} />}
+          {errors?.user && <ErrorMessage msg={errors?.user.message} />}
 
           <label className="input input-bordered flex items-center gap-2 w-full bg-white">
             <svg
@@ -106,12 +106,12 @@ export default function UserLogin({ changeUser, handleNotify }) {
                   value: 8,
                   message: 'Se nececitan mínimo 8 caracteres.',
                 },
-                pattern: {
+                /*pattern: {
                   value:
                     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
                   message:
                     'Es necesario al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
-                },
+                },*/
               })}
             />
           </label>

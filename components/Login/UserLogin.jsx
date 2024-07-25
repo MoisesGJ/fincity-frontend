@@ -29,7 +29,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
 
         if (res.ok) return router.push('/dashboard');
         else {
-          notify(res.error.message || res.error.toString());
+          handleNotify(res.error.message || res.error.toString());
           reset();
         }
       }, 1000);

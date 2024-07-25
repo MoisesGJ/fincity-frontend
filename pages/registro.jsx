@@ -38,7 +38,7 @@ export default function Page() {
   const onSubmit = async (data) => {
     setLoader(true);
     delete data?.confirmPassword;
-    const user = { ...data, role: '667653a1d8f008e63c6b6a0b' };
+    const user = data;
 
     try {
       const userExists = await API.getAccountByEmail(user.email);
@@ -55,7 +55,6 @@ export default function Page() {
         password: user.password,
         firstName: user.first_name,
         lastName: user.last_name,
-        role: user.role,
         redirect: false,
         callbackUrl: '/dashboard',
       });
@@ -67,7 +66,7 @@ export default function Page() {
         notify(resAuth.error.message || resAuth.error.toString());
       }
     } catch (error) {
-      notify('Ocurrió un error durante la autenticación');
+      notify(error.message || 'Ocurrió un problema');
     } finally {
       setTimeout(() => {
         setLoader(false);
@@ -93,16 +92,27 @@ export default function Page() {
     });
 
   useEffect(() => {
+    const handleAsync = async () => {
+      if (status === 'loading') {
+        return <p>Loading...</p>;
+      }
+      if (status === 'authenticated') {
+        const role = await API.getRole(session.accessToken);
+
+        if (role === 'Estudiante') return router.push('/game');
+        else if (role === 'Profesor') return router.push('/dashboard');
+        else {
+          signOut();
+        }
+      } else return;
+    };
+
+    handleAsync();
+  }, [status, router, session]);
+
+  useEffect(() => {
     if (error) setTimeout(() => notify(error), 1000);
   }, [error]);
-
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  if (status === 'authenticated') {
-    return router.push('/dashboard');
-  }
 
   return (
     <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">

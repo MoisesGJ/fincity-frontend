@@ -19,7 +19,7 @@ export const authOptions = {
           email: profile.email,
           first_name: profile.given_name,
           last_name: profile.family_name,
-          role: '6676ee2f23f3b664bbf5f50c',
+          role: '667653a1d8f008e63c6b6a0b',
           password: 'gr3at@3wdsG',
         };
       },
@@ -34,7 +34,6 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
         firstName: { label: 'First Name', type: 'text', optional: true },
         lastName: { label: 'Last Name', type: 'text', optional: true },
-        role: { label: 'Role', type: 'text', optional: true },
       },
       async authorize(credentials, req) {
         const userExists = await API.getAccountByEmail(credentials.email);
@@ -51,13 +50,13 @@ export const authOptions = {
             throw new Error('Ya existe un cuenta con ese correo');
           }
         } else {
-          const { email, password, firstName, lastName, role } = credentials;
+          const { email, password, firstName, lastName } = credentials;
           const userCreated = await authOptions.adapter.createUser({
             email,
             password,
             first_name: firstName,
             last_name: lastName,
-            role,
+            role: '667653a1d8f008e63c6b6a0b',
           });
 
           console.log(userCreated);
@@ -98,16 +97,12 @@ export const authOptions = {
       name: 'students',
       type: 'credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        user: { label: 'User', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const userExists = await API.getAccountByEmail(credentials.email);
-
-        if (!userExists) throw new Error('La cuenta no existe');
-
-        const user = await API.authenticateUser(
-          credentials.email,
+        const user = await API.authenticateStudent(
+          credentials.user,
           credentials.password
         );
 

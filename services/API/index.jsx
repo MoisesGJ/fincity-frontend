@@ -49,7 +49,23 @@ const API = {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: email, password: password }),
+    });
+
+    const response = await r.json();
+
+    if (response.error) return null;
+
+    return response.data.userResponse;
+  },
+
+  async authenticateStudent(user, password) {
+    const r = await fetch(`${BASE_URI}/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user: user, password: password }),
     });
 
     const response = await r.json();
@@ -129,6 +145,18 @@ const API = {
     if (!response.ok) return null;
 
     return response.data.user;
+  },
+
+  async getRole(auth) {
+    const r = await fetch(`${BASE_URI}/users/role/users`, {
+      headers: AUTH_HEADER(auth),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.role;
   },
 };
 
