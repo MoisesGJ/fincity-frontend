@@ -50,13 +50,14 @@ export default function Page() {
         return;
       }
 
-      const resAuth = await signIn('user', {
+      const resAuth = await signIn('usercreate', {
         email: user.email,
         password: user.password,
         firstName: user.first_name,
         lastName: user.last_name,
         role: user.role,
         redirect: false,
+        callbackUrl: '/dashboard',
       });
 
       if (resAuth.ok) {

@@ -116,7 +116,6 @@ const API = {
 
     const response = await r.json();
 
-    //if (response.expireSess) return { expire: true };
     if (!response.ok) throw new Error(response.error.message);
 
     return response.data.emailId;

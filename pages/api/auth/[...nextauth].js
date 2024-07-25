@@ -26,8 +26,8 @@ export const authOptions = {
     }),
 
     CredentialsProvider({
-      id: 'user',
-      name: 'user',
+      id: 'usercreate',
+      name: 'usercreate',
       type: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
@@ -60,8 +60,36 @@ export const authOptions = {
             role,
           });
 
+          console.log(userCreated);
+
+          await API.sendEmail(userCreated.id, userCreated.token);
+
           return userCreated;
         }
+      },
+    }),
+
+    CredentialsProvider({
+      id: 'user',
+      name: 'user',
+      type: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const userExists = await API.getAccountByEmail(credentials.email);
+
+        if (!userExists) throw new Error('Credenciales inválidas');
+
+        const user = await API.authenticateUser(
+          credentials.email,
+          credentials.password
+        );
+
+        if (!user) throw new Error('Credenciales inválidas');
+
+        return user;
       },
     }),
 
@@ -121,12 +149,6 @@ export const authOptions = {
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      if (account.provider === 'user') {
-        await API.sendEmail(user.id, user.token);
-
-        return true;
-      }
-
       return true;
     },
   },

@@ -16,7 +16,7 @@ export default function MyAdapter() {
         first_name: response._doc.first_name,
         last_name: response._doc.last_name,
         role: response._doc.role,
-        token: response._doc.token,
+        token: response.token,
       };
     },
     async getUser(id) {
