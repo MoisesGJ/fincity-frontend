@@ -158,6 +158,33 @@ const API = {
 
     return response.role;
   },
+
+  async createGroup(auth, data) {
+    const r = await fetch(`${BASE_URI}/groups`, {
+      method: 'POST',
+      headers: AUTH_HEADER(auth),
+      body: JSON.stringify(data),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.ok;
+  },
+
+  async getGroup(auth) {
+    const r = await fetch(`${BASE_URI}/groups`, {
+      method: 'GET',
+      headers: AUTH_HEADER(auth),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) throw new Error(response.error.message);
+
+    return response.data.group;
+  },
 };
 
 export default API;

@@ -41,7 +41,7 @@ export function withAuth(Component) {
     return (
       <Component
         {...props}
-        session={session.user}
+        session={session}
       />
     );
   };

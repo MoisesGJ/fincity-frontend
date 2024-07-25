@@ -5,11 +5,25 @@ import Link from 'next/link';
 import CreateGroup from '@/components/Dashboard/CreateGroup';
 import StudentsFile from '@/components/Dashboard/StudentsFile';
 import { signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import API from '@/services/API';
 
-function Dashboard() {
+function Dashboard({ session }) {
+  const [group, setGroup] = useState(null);
+
+  useEffect(() => {
+    const handleAsync = async () => {
+      const group = await API.getGroup(session.accessToken);
+
+      if (group) setGroup(group);
+    };
+
+    handleAsync();
+  }, [group, session]);
+
   return (
     <main className="bg-[#E4E4E7] min-h-fit min-w-fit">
-      <CreateGroup />
+      <CreateGroup session={session} />
       <StudentsFile />
       <nav className="flex p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md">
         <Link
@@ -140,13 +154,20 @@ function Dashboard() {
                   onClick={() =>
                     document.getElementById('create_group').showModal()
                   }
-                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3"
+                  className={`${
+                    group !== null && (group ? 'hidden' : 'block')
+                  } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3`}
                 >
                   Crear grupo
                 </Link>
               </div>
 
-              <p className="m-5">No tienes ningún grupo creado</p>
+              {group !== null &&
+                (group ? (
+                  <p className="m-5">{group.description}</p>
+                ) : (
+                  <p className="m-5">No tienes ningún grupo creado</p>
+                ))}
             </section>
           </div>
           <div className="bg-[#FAFAFA] rounded-3xl w-[250px] h-[200px] lg:w-[800px] lg:h-72 lg:m-5 shadow-xl mx-10 mt-6 md:w-[600px]">
@@ -158,7 +179,9 @@ function Dashboard() {
                   onClick={() =>
                     document.getElementById('create_students').showModal()
                   }
-                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-4 end"
+                  className={`${
+                    group !== null && (group ? 'block' : 'hidden')
+                  } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-4 end`}
                 >
                   Agregar
                 </Link>
