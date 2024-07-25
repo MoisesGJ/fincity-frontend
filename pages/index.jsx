@@ -1,6 +1,3 @@
-'use client';
-
-import { Chakra_Petch } from 'next/font/google';
 import Image from 'next/image';
 import skullCrasher from '../assets/characters/Skullcrasher.webp';
 import listIcon from '../assets/icons/list-icon.webp';
@@ -11,33 +8,43 @@ import logo from '../assets/Fincity_Logo.webp'; // Importa el logo
 import LandingPageCard from '../components/LandingPageCard';
 import Link from 'next/link';
 
-const chakra = Chakra_Petch({
-  subsets: ['latin'],
-  weight: ['300', '400', '600'],
-});
-
 export default function Home() {
   return (
     <>
       <header className="flex justify-between items-center py-4 px-8">
-        <Image src={logo} alt="FinCity Logo" width={100} height={50} />
+        <Image
+          src={logo}
+          alt="FinCity Logo"
+          width={100}
+          height={50}
+        />
         <nav className="flex space-x-4">
-          <Link href="/login" legacyBehavior>
-            <a className="bg-purple-700 text-white px-4 py-2 rounded-3xl hover:bg-purple-500">Login</a>
+          <Link
+            href="/login"
+            legacyBehavior
+          >
+            <a className="bg-purple-700 text-white px-4 py-2 rounded-3xl hover:bg-purple-500">
+              Login
+            </a>
           </Link>
-          <Link href="/registro" legacyBehavior>
-            <a className="bg-purple-700 text-white px-4 py-2 rounded-3xl hover:bg-purple-500">Regístrate</a>
+          <Link
+            href="/registro"
+            legacyBehavior
+          >
+            <a className="bg-purple-700 text-white px-4 py-2 rounded-3xl hover:bg-purple-500">
+              Regístrate
+            </a>
           </Link>
         </nav>
       </header>
-      <main className={chakra.className}>
+      <main>
         <section className="bg-zinc-50">
           <div className="relative bg-none">
             <div className="container mx-auto px-4 text-center py-24">
-              <h1 className="text-gray-900 font-chakra text-4xl font-normal leading-9 mt-24">
+              <h1 className="text-gray-900 text-4xl font-normal leading-9 mt-24">
                 Ampliando los horizontes financieros de tus hijos
               </h1>
-              <p className="text-gray-1000 font-chakra text-xl font-normal leading-10 opacity-100 mt-4">
+              <p className="text-gray-1000 text-xl font-normal leading-10 opacity-100 mt-4">
                 Creamos contenido y actividades para que tus hijos aprendan a
                 tener independencia financiera desde temprana edad de una manera
                 didáctica y divertida
@@ -48,22 +55,21 @@ export default function Home() {
         </section>
         <section className="container mx-auto px-4 py-8 flex flex-wrap justify-between">
           <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center mb-6 w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black font-chakra text-lg font-medium mb-3">
+            <h2 className="text-center text-black text-lg font-medium mb-3">
               Para los maestros
             </h2>
-            <p className="text-center text-gray-700 font-chakra text-base font-normal leading-6">
-              Ofrecemos a los educadores una variedad de recursos y
-              herramientas para apoyar su enseñanza de educación financiera en
-              el aula. Nos esforzamos por ser un recurso integral para
-              educadores que desean enseñar educación financiera de manera
-              efectiva y emocionante.
+            <p className="text-center text-gray-700 text-base font-normal leading-6">
+              Ofrecemos a los educadores una variedad de recursos y herramientas
+              para apoyar su enseñanza de educación financiera en el aula. Nos
+              esforzamos por ser un recurso integral para educadores que desean
+              enseñar educación financiera de manera efectiva y emocionante.
             </p>
           </div>
           <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black font-chakra text-lg font-medium mb-3">
+            <h2 className="text-center text-black text-lg font-medium mb-3">
               Para los estudiantes
             </h2>
-            <p className="text-center text-gray-700 font-chakra text-base font-normal leading-6">
+            <p className="text-center text-gray-700 text-base font-normal leading-6">
               Los niños pueden aprender sobre el mundo de las finanzas de una
               manera divertida y accesible. Desde entender el valor del dinero
               hasta aprender a ahorrar y gastar de manera inteligente, el
@@ -74,24 +80,21 @@ export default function Home() {
         </section>
         <section className="bg-zinc-50 flex flex-col ">
           <div className="bg-purple-700 bg-opacity-20 rounded-3xl  mx-auto w-11/12 md:w-7/12 p-6 mb-6">
-          <div className="text-center justify-center align-middle">
-          
-        
-      <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-3">
-        ¿Qué nos hace diferentes?
-      </h3>
-      <p className="text-[#09090b] text-base leading-[15px] p-3">
-        Nos esforzamos por ofrecer una experiencia en línea que sea
-        tanto educativa como divertida para los niños. Creemos en
-        empoderar a los niños con el conocimiento necesario para tomar
-        decisiones financieras inteligentes, desde ahorrar dinero para
-        alcanzar metas hasta entender la importancia de un balance entre
-        diversión y obligación.
-      </p>
-    </div>
-  </div>
-  <div className="text-center justify-center align-middle mt-8 md:mt-0 md:ml-8">
-            
+            <div className="text-center justify-center align-middle">
+              <h3 className="text-[#09090b] font-semibold text-lg leading-[15px] p-3">
+                ¿Qué nos hace diferentes?
+              </h3>
+              <p className="text-[#09090b] text-base leading-[15px] p-3">
+                Nos esforzamos por ofrecer una experiencia en línea que sea
+                tanto educativa como divertida para los niños. Creemos en
+                empoderar a los niños con el conocimiento necesario para tomar
+                decisiones financieras inteligentes, desde ahorrar dinero para
+                alcanzar metas hasta entender la importancia de un balance entre
+                diversión y obligación.
+              </p>
+            </div>
+          </div>
+          <div className="text-center justify-center align-middle mt-8 md:mt-0 md:ml-8">
             <Image
               src={skullCrasher}
               className="hidden md:block md:justify-center md:align-middle md:m-auto"
@@ -110,21 +113,30 @@ export default function Home() {
               </div>
               <div className="md:hidden">
                 <div className="carousel w-full">
-                  <div id="item1" className="carousel-item w-full">
+                  <div
+                    id="item1"
+                    className="carousel-item w-full"
+                  >
                     <LandingPageCard
                       icon={tasksIcon}
                       title="Seguimiento de Tareas y Ganancias"
                       content="Los padres pueden marcar las tareas completadas a medida que las realizan. Cada tarea completada les otorga una cantidad específica de dinero virtual, que se acumula en su cuenta."
                     />
                   </div>
-                  <div id="item2" className="carousel-item w-full">
+                  <div
+                    id="item2"
+                    className="carousel-item w-full"
+                  >
                     <LandingPageCard
                       icon={listIcon}
                       title="Asignación de Tareas: "
                       content="El maestro en conjunto con los padres pueden asignar tareas domésticas a sus hijos directamente a través de la aplicación. Desde hacer la cama hasta ayudar con la limpieza, las tareas se pueden personalizar según las necesidades y la edad del niño."
                     />
                   </div>
-                  <div id="item3" className="carousel-item w-full">
+                  <div
+                    id="item3"
+                    className="carousel-item w-full"
+                  >
                     <LandingPageCard
                       icon={cartIcon}
                       title="Canje de Recompensas:"
@@ -133,13 +145,22 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex justify-center w-full py-2 gap-2">
-                  <a href="#item1" className="btn btn-xs bg-[#5D269A]">
+                  <a
+                    href="#item1"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
                     1
                   </a>
-                  <a href="#item2" className="btn btn-xs bg-[#5D269A]">
+                  <a
+                    href="#item2"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
                     2
                   </a>
-                  <a href="#item3" className="btn btn-xs bg-[#5D269A]">
+                  <a
+                    href="#item3"
+                    className="btn btn-xs bg-[#5D269A]"
+                  >
                     3
                   </a>
                 </div>
@@ -210,9 +231,12 @@ export default function Home() {
                   width="505"
                   height="558"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood
+                    floodOpacity="0"
+                    result="BackgroundImageFix"
+                  />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -221,7 +245,10 @@ export default function Home() {
                   />
                   <feOffset dy="4" />
                   <feGaussianBlur stdDeviation="2" />
-                  <feComposite in2="hardAlpha" operator="out" />
+                  <feComposite
+                    in2="hardAlpha"
+                    operator="out"
+                  />
                   <feColorMatrix
                     type="matrix"
                     values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0"
@@ -246,9 +273,15 @@ export default function Home() {
                   y2="119.883"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#9855E9" />
-                  <stop offset="0.505208" stop-color="#B381F2" />
-                  <stop offset="1" stop-color="#F0E6FE" />
+                  <stop stopColor="#9855E9" />
+                  <stop
+                    offset="0.505208"
+                    stopColor="#B381F2"
+                  />
+                  <stop
+                    offset="1"
+                    stopColor="#F0E6FE"
+                  />
                 </linearGradient>
               </defs>
             </svg>
@@ -262,13 +295,18 @@ export default function Home() {
             brillante para tus hijos y hacer que el aprendizaje sea una
             experiencia emocionante para toda la familia!
           </p>
-          <Link href={'/registro'} legacyBehavior>
-            <a className="relative font-bold bg-white text-gray-950 px-5 py-2 rounded-3xl mb-10">Regístrate</a>
+          <Link
+            href={'/registro'}
+            legacyBehavior
+          >
+            <a className="relative font-bold bg-white text-gray-950 px-5 py-2 rounded-3xl mb-10">
+              Regístrate
+            </a>
           </Link>
         </section>
       </main>
 
-      <footer className={`${chakra.className} bg-[#5D269A] relative`}>
+      <footer className={`bg-[#5D269A] relative`}>
         <section className="p-5 pb-10 flex flex-col gap-3 text-xs">
           <h3 className="font-bold">Explora</h3>
           <Link href="/">Home</Link>

@@ -16,15 +16,17 @@ export default function MyAdapter() {
         first_name: response._doc.first_name,
         last_name: response._doc.last_name,
         role: response._doc.role,
-        //token: response._doc.token,
+        token: response.token,
       };
     },
     async getUser(id) {
       const user = await API.getAccountById(id);
+
       return user;
     },
     async getUserByEmail(email) {
       const user = await API.getAccountByEmail(email);
+
       return user;
     },
     async getUserByAccount(account) {
@@ -41,14 +43,9 @@ export default function MyAdapter() {
       return null;
     },
     async linkAccount(account) {
-      console.log(account);
-      const { userId, providerAccountId, access_token } = account;
+      const { userId, providerAccountId } = account;
 
-      const accountUpdated = await API.updatedUser(
-        userId,
-        providerAccountId,
-        access_token
-      );
+      const accountUpdated = await API.updatedUser(userId, providerAccountId);
 
       return { accountUpdated, ...account };
     },

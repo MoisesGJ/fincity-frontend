@@ -24,8 +24,11 @@ export const authOptions = {
         };
       },
     }),
+
     CredentialsProvider({
-      name: 'Credentials',
+      id: 'usercreate',
+      name: 'usercreate',
+      type: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
@@ -45,13 +48,9 @@ export const authOptions = {
           if (user) {
             return user;
           } else {
-            throw new Error('Credenciales inválidas');
+            throw new Error('Ya existe un cuenta con ese correo');
           }
         } else {
-          if (req.headers.referer.includes('/login')) {
-            throw new Error('Credenciales inválidas');
-          }
-
           const { email, password, firstName, lastName, role } = credentials;
           const userCreated = await authOptions.adapter.createUser({
             email,
@@ -61,8 +60,61 @@ export const authOptions = {
             role,
           });
 
+          console.log(userCreated);
+
+          await API.sendEmail(userCreated.id, userCreated.token);
+
           return userCreated;
         }
+      },
+    }),
+
+    CredentialsProvider({
+      id: 'user',
+      name: 'user',
+      type: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const userExists = await API.getAccountByEmail(credentials.email);
+
+        if (!userExists) throw new Error('Credenciales inválidas');
+
+        const user = await API.authenticateUser(
+          credentials.email,
+          credentials.password
+        );
+
+        if (!user) throw new Error('Credenciales inválidas');
+
+        return user;
+      },
+    }),
+
+    CredentialsProvider({
+      id: 'students',
+      name: 'students',
+      type: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const userExists = await API.getAccountByEmail(credentials.email);
+
+        if (!userExists) throw new Error('La cuenta no existe');
+
+        const user = await API.authenticateUser(
+          credentials.email,
+          credentials.password
+        );
+
+        if (!user)
+          throw new Error('Tu usuario y/o contraseña parecen no ser correctos');
+
+        return user;
       },
     }),
   ],
@@ -71,8 +123,8 @@ export const authOptions = {
   },
   pages: {
     signIn: '/login',
-    error: '/registro',
-    signOut: '/',
+    //error: '/registro',
+    //signOut: '/',
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -97,12 +149,6 @@ export const authOptions = {
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      if (account.provider === 'credentials') {
-        await API.sendEmail(user.id, user.token);
-
-        return true;
-      }
-
       return true;
     },
   },
