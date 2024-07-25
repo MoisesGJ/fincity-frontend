@@ -231,10 +231,10 @@ export default function Home() {
                   width="505"
                   height="558"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
                   <feFlood
-                    flood-opacity="0"
+                    floodOpacity="0"
                     result="BackgroundImageFix"
                   />
                   <feColorMatrix
@@ -273,14 +273,14 @@ export default function Home() {
                   y2="119.883"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#9855E9" />
+                  <stop stopColor="#9855E9" />
                   <stop
                     offset="0.505208"
-                    stop-color="#B381F2"
+                    stopColor="#B381F2"
                   />
                   <stop
                     offset="1"
-                    stop-color="#F0E6FE"
+                    stopColor="#F0E6FE"
                   />
                 </linearGradient>
               </defs>
