@@ -19,15 +19,17 @@ const API = {
 
     const response = await r.json();
 
-    if (!response.ok) throw new Error(response.error.message);
+    if (!response.ok) return null;
 
     return response.data.user;
   },
 
-  async updatedUser(id, partialData, auth) {
+  async updatedUser(id, partialData) {
     const r = await fetch(`${BASE_URI}/users/google/${id}`, {
       method: 'PATCH',
-      headers: AUTH_HEADER(auth),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         googleId: partialData,
         emailVerified: true,
@@ -57,9 +59,9 @@ const API = {
     return response.data.userResponse;
   },
 
-  async getAccountById(id, auth) {
+  async getAccountById(id) {
     const r = await fetch(`${BASE_URI}/users/${id}`, {
-      headers: AUTH_HEADER(auth),
+      headers: { 'Content-Type': 'application/json' },
     });
 
     const response = await r.json();
@@ -104,8 +106,6 @@ const API = {
   },
 
   async sendEmail(id, auth) {
-    console.log(`${BASE_URI}/users/send-email`);
-
     const r = await fetch(`${BASE_URI}/users/send-email`, {
       method: 'POST',
       headers: AUTH_HEADER(auth),
@@ -123,7 +123,7 @@ const API = {
   },
 
   async findByAccessToken(accessToken) {
-    const r = await fetch(`${BASE_URI}/users/access-token/${accessToken}`, {});
+    const r = await fetch(`${BASE_URI}/users/access-token/${accessToken}`);
 
     const response = await r.json();
 

@@ -62,13 +62,12 @@ export default function Page() {
 
   const handlerSendEmail = async () => {
     setLoader(true);
-    console.log(session.accessToken);
+
     const emailSended = await API.sendEmail(
       session.user.id,
       session.accessToken
     );
 
-    //if (emailSended['expire']) return signOut();
     if (emailSended) {
       setLoader(false);
       toast.success('¡Te reenviamos el correo!', {
