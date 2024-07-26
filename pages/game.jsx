@@ -14,30 +14,26 @@ export default function Home() {
 
   useEffect(() => {
     const handleAsync = async () => {
+      if (status === 'loading') return <p>Loading...</p>;
+
       if (status === 'unauthenticated') {
         router.push('/login');
+      } else {
+        const role = await API.getRole(session.accessToken);
+
+        if (role !== 'Estudiante')
+          return router.push('/login?error=Hubo%20un%20error');
       }
-
-      const role = await API.getRole(session.accessToken);
-
-      if (role !== 'Estudiante')
-        return router.push('/login?error=Hubo%20un%20error');
     };
 
     handleAsync();
   }, [status, router, session]);
 
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  if (status === 'authenticated') {
-    return (
-      <div className="min-h-screen w-screen">
-        <Game session={session.user} />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen w-screen">
+      <Game session={session.user} />
+    </div>
+  );
 
   return null;
 }
