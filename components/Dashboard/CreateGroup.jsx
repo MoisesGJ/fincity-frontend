@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 
-export default function CreateGroup({ session }) {
+export default function CreateGroup({ session, update }) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [groupModal, setGroupModal] = useState(true);
@@ -37,6 +37,7 @@ export default function CreateGroup({ session }) {
         theme: 'colored',
         transition: Bounce,
       });
+      update(true);
     } else {
       setLoader(false);
       setGroupModal(false);
