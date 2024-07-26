@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 import { useEffect, useState } from 'react';
 
@@ -10,9 +10,10 @@ import { useRouter } from 'next/navigation';
 
 import UserLogin from '@/components/Login/UserLogin';
 import StudentsLogin from '@/components/Login/StudentsLogin';
+import API from '@/services/API';
 
 export default function Page() {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
   const [errorAuth, setErrorAuth] = useState(null);
 
   const [key, setKey] = useState(0);
@@ -39,19 +40,40 @@ export default function Page() {
     });
 
   useEffect(() => {
+    const stateLog = window.localStorage.getItem('Login');
+    if (stateLog === 'Profesor') {
+      setUser(true);
+    } else if (stateLog === 'Estudiante') {
+      setUser(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleAsync = async () => {
+      if (status === 'loading') {
+        return <p>Loading...</p>;
+      }
+      if (status === 'authenticated') {
+        const role = await API.getRole(session.accessToken);
+
+        if (role === 'Estudiante') return router.push('/game');
+        else if (role === 'Profesor') return router.push('/dashboard');
+        else {
+          signOut();
+        }
+      } else return;
+    };
+
+    handleAsync();
+  }, [status, router, session]);
+
+  useEffect(() => {
     if (error) setTimeout(() => notify(error), 1000);
     if (token) window.localStorage.setItem('emailValidate', token);
   }, [error, token]);
 
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
-  /*if (status === 'authenticated') {
-    return router.push('/dashboard');
-  }*/
-
   const handleChangeUser = (value) => {
+    window.localStorage.setItem('Login', value ? 'Profesor' : 'Estudiante');
     setKey((prevKey) => prevKey + 1);
     setUser(value);
   };
@@ -113,18 +135,19 @@ export default function Page() {
           />
         </svg>
       </div>
+      {user !== null &&
+        (user ? (
+          <UserLogin
+            changeUser={handleChangeUser}
+            handleNotify={notify}
+          />
+        ) : (
+          <StudentsLogin
+            changeUser={handleChangeUser}
+            handleNotify={notify}
+          />
+        ))}
 
-      {user ? (
-        <UserLogin
-          changeUser={handleChangeUser}
-          handleNotify={notify}
-        />
-      ) : (
-        <StudentsLogin
-          changeUser={handleChangeUser}
-          handleNotify={notify}
-        />
-      )}
       <ToastContainer />
     </div>
   );

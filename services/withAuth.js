@@ -17,6 +17,11 @@ export function withAuth(Component) {
           return router.push('/login');
         }
 
+        const role = await API.getRole(session.accessToken);
+
+        if (role !== 'Profesor')
+          return router.push('/login?error=Hubo%20un%20error');
+
         const isVerified = await API.validateAccountVerify(session.user.id);
 
         if (session && isVerified) {
@@ -36,7 +41,7 @@ export function withAuth(Component) {
     return (
       <Component
         {...props}
-        session={session.user}
+        session={session}
       />
     );
   };

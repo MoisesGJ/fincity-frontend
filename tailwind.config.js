@@ -16,8 +16,13 @@ module.exports = {
         fadeIn: 'fadeIn 1s ease-in-out',
         fadeInSlow: 'fadeIn 3s ease-in-out',
         bounceOnce: 'bounceOnce 1.5s ease-in-out',
+        slideInFromRight: 'slideInFromRight 1s ease-out',
       },
       keyframes: {
+        slideInFromRight: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
         fadeIn: {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },

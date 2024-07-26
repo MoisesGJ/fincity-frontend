@@ -49,7 +49,23 @@ const API = {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: email, password: password }),
+    });
+
+    const response = await r.json();
+
+    if (response.error) return null;
+
+    return response.data.userResponse;
+  },
+
+  async authenticateStudent(user, password) {
+    const r = await fetch(`${BASE_URI}/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user: user, password: password }),
     });
 
     const response = await r.json();
@@ -129,6 +145,77 @@ const API = {
     if (!response.ok) return null;
 
     return response.data.user;
+  },
+
+  async getRole(auth) {
+    const r = await fetch(`${BASE_URI}/users/role/users`, {
+      headers: AUTH_HEADER(auth),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.role;
+  },
+
+  async createGroup(auth, data) {
+    const r = await fetch(`${BASE_URI}/groups`, {
+      method: 'POST',
+      headers: AUTH_HEADER(auth),
+      body: JSON.stringify(data),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.ok;
+  },
+
+  async getGroup(auth) {
+    const r = await fetch(`${BASE_URI}/groups`, {
+      method: 'GET',
+      headers: AUTH_HEADER(auth),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return false;
+
+    return response.data.group;
+  },
+
+  async getStudents(auth) {
+    const r = await fetch(`${BASE_URI}/students`, {
+      method: 'GET',
+      headers: AUTH_HEADER(auth),
+    });
+
+    const response = await r.text();
+
+    const students = JSON.parse(response);
+
+    if (!students) return false;
+
+    return students;
+  },
+
+  async createStudents(auth, data) {
+    const r = await fetch(`${BASE_URI}/users/students`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain',
+        Authorization: `Bearer ${auth}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const response = await r.json();
+
+    if (!response.ok) return null;
+
+    return response.ok;
   },
 };
 

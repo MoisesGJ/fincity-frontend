@@ -39,18 +39,17 @@ export default function Home() {
       </header>
       <main>
         <section className="bg-zinc-50">
-          <div className="relative bg-none">
-            <div className="container mx-auto px-4 text-center py-24">
-              <h1 className="text-gray-900 text-4xl font-normal leading-9 mt-24">
+          <div className="relative rounded-s-[300px] bg-gradient-to-l from-purple-500 to-violet-600 animate-slideInFromRight">
+            <div className="container mx-auto px-4 text-center py-24 text-white">
+              <h1 className="text-4xl font-normal leading-9 mt-24">
                 Ampliando los horizontes financieros de tus hijos
               </h1>
-              <p className="text-gray-1000 text-xl font-normal leading-10 opacity-100 mt-4">
+              <p className="text-stone-210 text-xl font-normal leading-10 opacity-100 mt-4">
                 Creamos contenido y actividades para que tus hijos aprendan a
                 tener independencia financiera desde temprana edad de una manera
                 didáctica y divertida
               </p>
             </div>
-            <div className="absolute top-0 right-0  h-full w-1/2 rounded-2xl bg-gradient-to-r from-transparent to-purple-700"></div>
           </div>
         </section>
         <section className="container mx-auto px-4 py-8 flex flex-wrap justify-between">
@@ -286,7 +285,7 @@ export default function Home() {
               </defs>
             </svg>
           </div>
-          <p className="relative font-bold text-lg">
+          <p className="relative font-bold text-lg text-white">
             ¿Listo para transformar la forma en que tus hijos aprenden sobre el
             dinero y la responsabilidad? ¡Únete a nosotros!
           </p>

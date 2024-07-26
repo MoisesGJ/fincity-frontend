@@ -5,23 +5,48 @@ import Link from 'next/link';
 import CreateGroup from '@/components/Dashboard/CreateGroup';
 import StudentsFile from '@/components/Dashboard/StudentsFile';
 import { signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import API from '@/services/API';
 
-function Dashboard() {
+function Dashboard({ session }) {
+  const [group, setGroup] = useState(false);
+  const [students, setStudents] = useState(false);
+  const [update, setUpdate] = useState(null);
+
+  useEffect(() => {
+    const handleAsync = async () => {
+      const group = await API.getGroup(session.accessToken);
+
+      if (group) setGroup(group);
+
+      const students = await API.getStudents(session.accessToken);
+      if (students) setStudents(students);
+    };
+
+    handleAsync();
+  }, [session, update]);
+
   return (
-    <main className="bg-[#E4E4E7] min-h-fit min-w-fit">
-      <CreateGroup />
-      <StudentsFile />
-      <nav className="flex p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md">
+    <main className="bg-[#E4E4E7] min-h-screen min-w-screen">
+      <CreateGroup
+        session={session}
+        update={setUpdate}
+      />
+      <StudentsFile
+        session={session}
+        update={setStudents}
+      />
+      <nav className="flex flex-col py-16 md:py-0 md:flex-row p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md relative">
         <Link
           href={'/'}
-          className=""
+          className="xl:absolute xl:start-12 font-bold text-3xl text-purple-600"
         >
           Fincity
         </Link>
-        <div className="border-2 border-[#5D269A] rounded-xl flex content-center">
+        <div className="border-2 border-[#5D269A] rounded-xl flex justify-between px-3 w-full max-w-96">
           <input
             type="text"
-            className="rounded-xl bg-[#FAFAFA] p-2 w-96"
+            className="rounded-xl bg-[#FAFAFA] p-2"
             placeholder="Buscar"
           />
           <button className="">
@@ -47,7 +72,7 @@ function Dashboard() {
           {/* Page content here */}
           <label
             htmlFor="my-drawer"
-            className="btn bg-[#5D269A] drawer-button"
+            className="bg-[#5D269A] drawer-button fixed w-9 h-12 md:h-2/3 top-1/2 transition -translate-y-1/2 rounded-r-md md:rounded-r-xl flex items-center justify-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +80,7 @@ function Dashboard() {
               viewBox="0 -960 960 960"
               width="24px"
               fill="#e8eaed"
+              className="animate-pulse"
             >
               <path d="m242-200 200-280-200-280h98l200 280-200 280h-98Zm238 0 200-280-200-280h98l200 280-200 280h-98Z" />
             </svg>
@@ -66,38 +92,31 @@ function Dashboard() {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="menu bg-[#5D269A] text-base-content min-h-full w-80 p-4">
+          <div className="menu bg-[#5D269A] min-h-full w-80 p-4 text-white">
             {/* Sidebar content here */}
             <li>
-              <Link href={'/'}>
+              <Link
+                href={'/dashboard'}
+                className="flex items-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
                   height="24px"
-                  viewBox="0 -960 960 960"
                   width="24px"
-                  fill="#D4D4D8"
+                  className="opacity-70"
                 >
-                  <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                 </svg>
-                Home
+                <span className="text-xl">
+                  ¡Hola, {session.user.first_name}!
+                </span>
               </Link>
             </li>
+            <hr class="h-px my-3 bg-slate-50 border-0" />
             <li>
-              <Link href={'/'}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#D4D4D8"
-                >
-                  <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z" />
-                </svg>
-                Shop
-              </Link>
-            </li>
-            <li>
-              <Link href={'/'}>
+              <Link href={'mailto:help@fincity.com'}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
@@ -109,8 +128,10 @@ function Dashboard() {
                 </svg>
                 Ayuda
               </Link>
+            </li>
+            <li>
               <Link
-                href={'#'}
+                href={'/'}
                 onClick={() => signOut()}
               >
                 <svg
@@ -129,52 +150,83 @@ function Dashboard() {
         </div>
       </div>
       <label htmlFor="drawer-"></label>
-      <div className="flex flex-row">
-        <div className="flex flex-col place-content-between lg:mx-16">
-          <div className="bg-[#FAFAFA] rounded-3xl w-[250px] h-[200px] lg:w-[800px] lg:h-72 lg:m-5 shadow-xl mx-10 md:w-[600px]">
+      <div className="flex flex-row  w-full h-full mt-5">
+        <div className="flex flex-col gap-5 place-content-between lg:mx-16 w-full px-10">
+          <div className="bg-[#FAFAFA] rounded-3xl grow h-36 lg:h-72 shadow-xl">
             <section>
               <div className="flex flex-row place-content-between">
-                <p className="m-5">Grupos</p>
+                <p className="m-5">Grupo</p>
                 <Link
                   href={'#Crear-Grupo'}
                   onClick={() =>
                     document.getElementById('create_group').showModal()
                   }
-                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3"
+                  className={`${
+                    group !== null && (group ? 'hidden' : 'block')
+                  } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3`}
                 >
                   Crear grupo
                 </Link>
               </div>
 
-              <p className="m-5">No tienes ningún grupo creado</p>
+              {group ? (
+                <p className="m-5 text-xl font-bold">{group.description}</p>
+              ) : (
+                <p className="m-5 italic text-base">
+                  No tienes ningún grupo creado
+                </p>
+              )}
             </section>
           </div>
-          <div className="bg-[#FAFAFA] rounded-3xl w-[250px] h-[200px] lg:w-[800px] lg:h-72 lg:m-5 shadow-xl mx-10 mt-6 md:w-[600px]">
+          <div className="bg-[#FAFAFA] rounded-3xl grow h-60 lg:h-72 shadow-xl">
             <section>
               <div className="flex flex-row place-content-between">
                 <p className="m-5">Alumnos</p>
-                <Link
-                  href={'#Agregar-Alumnos'}
-                  onClick={() =>
-                    document.getElementById('create_students').showModal()
-                  }
-                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-4 end"
-                >
-                  Agregar
-                </Link>
+                {group && (
+                  <Link
+                    href={'#Agregar-Alumnos'}
+                    onClick={() =>
+                      document.getElementById('create_students').showModal()
+                    }
+                    className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-4 end"
+                  >
+                    Agregar
+                  </Link>
+                )}
               </div>
-              <p className="m-5">
-                El archivo debe tener la siguiente estructura
-              </p>
+              {group ? (
+                students ? (
+                  <p className="m-5">
+                    {students.map(({ _id, first_name, last_name }) => {
+                      return (
+                        <span
+                          key={_id}
+                          className="italic mx-3"
+                        >
+                          {`${first_name} ${last_name}`}
+                        </span>
+                      );
+                    })}
+                  </p>
+                ) : (
+                  <p className="m-5 italic text-base">
+                    Crea alumnos desde un archivo o añadiendo uno por uno...
+                  </p>
+                )
+              ) : (
+                <p className="m-5 italic text-base">
+                  Crea un grupo para añadir alumnos
+                </p>
+              )}
             </section>
           </div>
-          <div className="bg-[#FAFAFA] rounded-3xl  w-[250px] h-[200px] lg:w-[800px] lg:h-72 lg:m-5 shadow-xl md:w-[600px] mx-10 mt-6">
+          <div className="bg-[#FAFAFA] rounded-3xl  grow h-40 lg:h-72 shadow-xl">
             <section>
               <div className="flex flex-col">
                 <p className="m-5">Recursos</p>
                 <Link
                   href={'/'}
-                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-5 text-center"
+                  className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-5 text-center my-auto"
                 >
                   Carga un archivo aqui
                 </Link>
@@ -182,11 +234,11 @@ function Dashboard() {
             </section>
           </div>
         </div>
-        <sidebar>
+        {/*<sidebar>
           <div className="bg-[#FAFAFA] rounded-3xl w-40 h-60 lg:w-96 lg:m-5 lg:h-96 shadow-lg mr-6 md:w-[250px]">
             <p className="p-4">Still figuring out</p>
           </div>
-        </sidebar>
+        </sidebar>*/}
       </div>
     </main>
   );

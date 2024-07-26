@@ -55,7 +55,7 @@ export default function Game({ session }) {
   }, [map]);
 
   return (
-    <main className="overflow-hidden text-[2rem]">
+    <main className="overflow-hidden text-[2rem] min-h-screen">
       <div className="relative w-full h-full">
         <div id="ui">
           <p className="text-gray-200 select-none absolute left-5 top-[1vh] flex flex-col">

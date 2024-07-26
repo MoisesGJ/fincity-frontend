@@ -9,6 +9,8 @@ export default function MyAdapter() {
 
       const response = await API.createNewUser(user);
 
+      console.log(response);
+
       return {
         id: response._doc._id,
         email: response._doc.email,
