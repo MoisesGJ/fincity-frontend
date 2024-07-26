@@ -192,11 +192,11 @@ const API = {
       headers: AUTH_HEADER(auth),
     });
 
-    if (!r.ok) throw new Error(response.error.message);
-
     const response = await r.text();
 
     const students = JSON.parse(response);
+
+    if (!students) return false;
 
     return students;
   },
