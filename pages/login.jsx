@@ -43,7 +43,7 @@ export default function Page() {
     const stateLog = window.localStorage.getItem('Login');
     if (stateLog === 'Profesor') {
       setUser(true);
-    } else if (stateLog === 'Estudiante') {
+    } else {
       setUser(false);
     }
   }, []);
