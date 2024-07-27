@@ -12,6 +12,8 @@ export default function Game({ session }) {
   const dialogueRef = useRef(null);
   const closeBtnRef = useRef(null);
 
+  const { user } = session;
+
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -55,15 +57,15 @@ export default function Game({ session }) {
   }, [map]);
 
   return (
-    <main className="overflow-hidden text-[2rem] min-h-screen">
-      <div className="relative w-full h-full">
+    <main className="overflow-hidden text-[2rem] min-h-[100dvh]">
+      <div className="relative w-full h-[100dvh]">
         <div id="ui">
           <p className="text-gray-200 select-none absolute left-5 top-[1vh] flex flex-col">
-            ¡Hola, {session.first_name}!
+            ¡Hola, {user.first_name}!
           </p>
           <div
             id="textbox-container"
-            className="hidden"
+            className="absolute bottom-0 w-full hidden"
             ref={textboxContainerRef}
           >
             <div

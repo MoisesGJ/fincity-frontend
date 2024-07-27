@@ -10,7 +10,7 @@ import API from '@/services/API';
 
 function Dashboard({ session }) {
   const [group, setGroup] = useState(false);
-  const [students, setStudents] = useState(false);
+  const [students, setStudents] = useState([]);
   const [update, setUpdate] = useState(null);
 
   useEffect(() => {
@@ -19,8 +19,8 @@ function Dashboard({ session }) {
 
       if (group) setGroup(group);
 
-      const students = await API.getStudents(session.accessToken);
-      if (students) setStudents(students);
+      const newStudents = await API.getStudents(session.accessToken);
+      if (newStudents) setStudents(newStudents);
     };
 
     handleAsync();
@@ -195,9 +195,9 @@ function Dashboard({ session }) {
                 )}
               </div>
               {group ? (
-                students ? (
+                students.length >= 1 ? (
                   <p className="m-5">
-                    {students.map(({ _id, first_name, last_name }) => {
+                    {students?.map(({ _id, first_name, last_name }) => {
                       return (
                         <span
                           key={_id}
