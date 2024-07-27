@@ -1,4 +1,4 @@
-import { withAuth } from '@/services/withAuth';
+/*import { withAuth } from '@/services/withAuth';
 import Image from 'next/image';
 
 import { useForm } from 'react-hook-form';
@@ -183,4 +183,4 @@ function Students({ session }) {
   );
 }
 
-export default withAuth(Students);
+export default withAuth(Students);*/
