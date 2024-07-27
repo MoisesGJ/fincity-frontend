@@ -31,7 +31,7 @@ export default function DragDrop({ status, update }) {
       <Link
         href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/file/students`}
         target="_blank"
-        className="text-base text-purple-600 font-medium underline"
+        className="text-base text-purple-600 font-medium mx-auto italic"
         download
       >
         Descargar plantilla

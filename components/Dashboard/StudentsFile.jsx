@@ -6,18 +6,18 @@ import { toast, Bounce, ToastContainer } from 'react-toastify';
 import DragDrop from './DragAndDrop';
 import API from '@/services/API';
 
-export default function StudentsFile({ session, update }) {
+export default function StudentsFile({ session, update, updatePage }) {
   const [dragDrop, setDragDrop] = useState(false);
   const [loader, setLoader] = useState(false);
   const [studentsModal, setStudentsModal] = useState(true);
 
   const handlerCreateStudents = async (data) => {
+    setStudentsModal(false);
     setLoader(true);
     const students = await API.createStudents(session.accessToken, data);
 
     if (students) {
       setLoader(false);
-      setStudentsModal(false);
       toast.success('¡Se han creado los alumnos!', {
         position: 'top-center',
         autoClose: 3000,
@@ -30,9 +30,10 @@ export default function StudentsFile({ session, update }) {
         transition: Bounce,
       });
       update(true);
+      updatePage(true);
     } else {
       setLoader(false);
-      setStudentsModal(false);
+
       toast.error('Hubo un error con la creación :(', {
         position: 'top-center',
         autoClose: 3000,
@@ -44,6 +45,7 @@ export default function StudentsFile({ session, update }) {
         theme: 'colored',
         transition: Bounce,
       });
+      setStudentsModal(true);
     }
   };
 
@@ -93,6 +95,7 @@ export default function StudentsFile({ session, update }) {
               <DragDrop
                 status={dragDrop}
                 update={handlerCreateStudents}
+                updatePage={updatePage}
               />
               <div className="inline-flex items-center justify-center w-full max-w-xl relative ">
                 <hr className="w-full md:w-96 h-px my-6 bg-gray-600 border-0 " />

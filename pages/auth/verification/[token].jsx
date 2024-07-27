@@ -54,7 +54,7 @@ export default function Page() {
     if (validate.ok) {
       return router.push('/dashboard');
     } else {
-      toast.error(validate.error.message, {
+      toast.error('Validación prohibida', {
         position: 'top-center',
         autoClose: 3000,
         hideProgressBar: false,

@@ -8,6 +8,8 @@ import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import API from '@/services/API';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 function Dashboard({ session }) {
   const [group, setGroup] = useState(false);
   const [students, setStudents] = useState([]);
@@ -35,6 +37,7 @@ function Dashboard({ session }) {
       <StudentsFile
         session={session}
         update={setStudents}
+        updatePage={setUpdate}
       />
       <nav className="flex flex-col py-16 md:py-0 md:flex-row p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md relative">
         <Link

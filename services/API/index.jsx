@@ -98,19 +98,23 @@ const API = {
   },
 
   async validateAccount(encoded, auth) {
-    const decoded = atob(encoded);
-    const r = await fetch(`${BASE_URI}/users/validate-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`,
-        Authentication: `Basic ${decoded}`,
-      },
-    });
+    try {
+      const decoded = atob(encoded);
+      const r = await fetch(`${BASE_URI}/users/validate-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+          Authentication: `Basic ${decoded}`,
+        },
+      });
 
-    const response = await r.json();
+      const response = await r.json();
 
-    return response;
+      return response;
+    } catch (error) {
+      return false;
+    }
   },
 
   async validateAccountVerify(id) {
