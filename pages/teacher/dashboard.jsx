@@ -26,7 +26,7 @@ function Dashboard({ session }) {
     };
 
     handleAsync();
-  }, [session, update]);
+  }, [session, update, students]);
 
   return (
     <main className="bg-[#E4E4E7] min-h-[100dvh] min-w-screen">
