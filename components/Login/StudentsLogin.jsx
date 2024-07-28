@@ -38,7 +38,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
 
   return (
     <>
-      {isSubmitting && <Loading />}
+      {isSubmitting && <Loading student={true} />}
       <main
         className={`mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
       >

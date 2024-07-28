@@ -37,7 +37,7 @@ export default function Page() {
         setLoading(false);
       } else {
         router.push(
-          '/login?Error=Inicia%20sesi%C3%B3n%20para%20poder%20continuar'
+          '/login?error=Inicia%20sesi%C3%B3n%20para%20poder%20continuar'
         );
       }
     };
@@ -66,7 +66,7 @@ export default function Page() {
         transition: Bounce,
       });
       setTimeout(() => {
-        return router.push('/auth/notValidate');
+        return router.push('/authorization/validation');
       }, 2000);
     }
   };

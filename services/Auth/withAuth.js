@@ -27,7 +27,7 @@ export function withAuth(Component) {
         if (session && isVerified) {
           setLoading(false);
         } else {
-          router.push('/auth/notValidate');
+          router.push('/authorization/validation');
         }
       };
 
