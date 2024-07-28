@@ -49,7 +49,7 @@ function Dashboard({ session }) {
         <div className="border-2 border-[#5D269A] rounded-xl flex justify-between px-3 w-full max-w-96">
           <input
             type="text"
-            className="rounded-xl bg-[#FAFAFA] p-2"
+            className="p-2 w-full bg-transparent focus:outline-none focus:ring-0 active:outline-none active:ring-0"
             placeholder="Buscar"
           />
           <button className="">
