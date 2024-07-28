@@ -41,7 +41,7 @@ export default function Page({ logOut, email, sendEmail }) {
           </p>
           <p className="my-2">
             Si no lo encuentras puedes buscar en la carpeta de spam o si tuviste
-            un error.
+            un error...
           </p>
           <p>
             <Link
