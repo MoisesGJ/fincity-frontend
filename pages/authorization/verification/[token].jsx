@@ -54,7 +54,7 @@ export default function Page() {
     if (validate.ok) {
       return router.push('/teacher/dashboard');
     } else {
-      toast.error('Validación prohibida', {
+      toast.error('Validación fallida', {
         position: 'top-center',
         autoClose: 3000,
         hideProgressBar: false,
@@ -75,7 +75,7 @@ export default function Page() {
     <>
       <ToastContainer />
       <main
-        className={`${chakra.className} flex justify-center items-center w-screen min-h-screen bg-slate-50 ${styles.bgCircles}`}
+        className={`${chakra.className} flex justify-center items-center w-screen min-h-screen bg-slate-50 ${styles.bgPattern}`}
       >
         <div className="bg-slate-50 rounded-xl flex flex-col items-center justify-around h-96 w-full md:w-1/2">
           <div className="relative px-2 md:px-5 text-base text-purple-900 text-center mt-10 w-full">
