@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import ErrorMessage from '../Globals/ErrorMessage';
 import Loading from '../Globals/LoadingPage';
+import Link from 'next/link';
 
 export default function UserLogin({ changeUser, handleNotify }) {
   const router = useRouter();
@@ -186,9 +186,8 @@ export default function UserLogin({ changeUser, handleNotify }) {
               Crea una
             </Link>
           </span>
-          <Link
+          <button
             className="text-purple-600 font-bold text-md btn shadow-none bg-white border-none  hover:bg-white hover:text-black"
-            href={'#'}
             onClick={() => changeUser(false)}
           >
             <svg
@@ -200,7 +199,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
               <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
             </svg>
             Soy un alumno
-          </Link>
+          </button>
         </p>
       </main>
     </>
