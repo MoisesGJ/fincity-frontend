@@ -9,14 +9,55 @@ import { useEffect, useState } from 'react';
 import API from '@/services/API';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { toast, Bounce, ToastContainer } from 'react-toastify';
 
 function Dashboard({ session }) {
   const [group, setGroup] = useState(false);
   const [students, setStudents] = useState([]);
   const [update, setUpdate] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleAsync = async () => {
+      if (update) {
+        let msg = students
+          ? '¡Se ha creado el grupo!'
+          : '¡Se han creado los estudiantes!';
+
+        toast.success(msg, {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+          transition: Bounce,
+        });
+      }
+
+      if (error) {
+        let msg = '';
+        if (error.students) {
+          msg = 'Hubo un error al crear los estudiantes';
+        } else {
+          msg = 'Hubo un error al crear el grupo';
+        }
+
+        toast.error(msg, {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+          transition: Bounce,
+        });
+      }
+
       const group = await API.getGroup(session.accessToken);
 
       if (group) setGroup(group);
@@ -26,18 +67,20 @@ function Dashboard({ session }) {
     };
 
     handleAsync();
-  }, [session, update, students]);
+  }, [session, update, error]);
 
   return (
     <main className="bg-[#E4E4E7] min-h-[100dvh] min-w-screen">
       <CreateGroup
         session={session}
         update={setUpdate}
+        error={setError}
       />
       <StudentsFile
         session={session}
         update={setStudents}
         updatePage={setUpdate}
+        error={setError}
       />
       <nav className="flex flex-col py-16 md:py-0 md:flex-row p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md relative">
         <Link

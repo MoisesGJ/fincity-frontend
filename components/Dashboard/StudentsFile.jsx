@@ -7,46 +7,22 @@ import DragDrop from './DragAndDrop';
 import API from '@/services/API';
 import Loading from '../Globals/LoadingPage';
 
-export default function StudentsFile({ session, update, updatePage }) {
+export default function StudentsFile({ session, update, updatePage, error }) {
   const [dragDrop, setDragDrop] = useState(false);
   const [loader, setLoader] = useState(false);
   const [studentsModal, setStudentsModal] = useState(true);
 
   const handlerCreateStudents = async (data) => {
-    setStudentsModal(false);
     setLoader(true);
     const students = await API.createStudents(session.accessToken, data);
 
     if (students) {
       setLoader(false);
-      toast.success('¡Se han creado los alumnos!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-        transition: Bounce,
-      });
       update(true);
       updatePage(true);
     } else {
       setLoader(false);
-
-      toast.error('Hubo un error con la creación :(', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-        transition: Bounce,
-      });
-      setStudentsModal(true);
+      error({ students: null });
     }
   };
 

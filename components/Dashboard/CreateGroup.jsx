@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 import Loading from '../Globals/LoadingPage';
 
-export default function CreateGroup({ session, update }) {
+export default function CreateGroup({ session, update, error }) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [groupModal, setGroupModal] = useState(true);
@@ -26,34 +26,16 @@ export default function CreateGroup({ session, update }) {
 
     if (group) {
       setLoader(false);
+
       setGroupModal(false);
-      toast.success('¡Se ha creado el grupo!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-        transition: Bounce,
-      });
+
       update(true);
     } else {
       setLoader(false);
-      setGroupModal(false);
-      toast.error('Hubo un error', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-        transition: Bounce,
-      });
+
+      error({ group: null });
     }
+
     reset();
   };
 
