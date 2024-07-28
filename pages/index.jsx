@@ -5,7 +5,7 @@ import pigIcon from '../assets/icons/pig-icon.webp';
 import cartIcon from '../assets/icons/cart-icon.webp';
 import tasksIcon from '../assets/icons/tasks-icon.webp';
 import logo from '../assets/Fincity_Logo.webp'; // Importa el logo
-import LandingPageCard from '../components/LandingPageCard';
+import LandingPageCard from '../components/LandingPage/LandingPageCard';
 import Link from 'next/link';
 
 export default function Home() {

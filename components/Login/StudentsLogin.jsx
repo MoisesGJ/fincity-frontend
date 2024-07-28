@@ -4,8 +4,8 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import ErrorMessage from '../ErrorMessage';
-import Loading from '../LoadingPage';
+import ErrorMessage from '../Globals/ErrorMessage';
+import Loading from '../Globals/LoadingPage';
 
 export default function UserLogin({ changeUser, handleNotify }) {
   const router = useRouter();

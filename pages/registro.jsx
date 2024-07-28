@@ -8,7 +8,7 @@ import { signIn } from 'next-auth/react';
 
 import { useForm } from 'react-hook-form';
 
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../components/Globals/ErrorMessage';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
