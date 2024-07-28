@@ -1,5 +1,5 @@
-import { scaleFactor } from '@/services/Kaboom/constants';
-import { setCamScale } from '@/services/Kaboom/utils';
+import { scaleFactor } from '@/libs/Kaboom/constants';
+import { setCamScale } from '@/libs/Kaboom/utils';
 
 export default class MainScene {
   constructor(kaboomInstance, entities) {

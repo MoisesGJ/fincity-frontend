@@ -1,5 +1,5 @@
-import { scaleFactor } from '@/services/Kaboom/constants';
-import { displayDialogue } from '@/services/Kaboom/utils';
+import { scaleFactor } from '@/libs/Kaboom/constants';
+import { displayDialogue } from '@/libs/Kaboom/utils';
 import { signOut } from 'next-auth/react';
 
 export default class Player {

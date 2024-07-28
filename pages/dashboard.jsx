@@ -1,4 +1,4 @@
-import { withAuth } from '@/services/withAuth';
+import { withAuth } from '@/services/Auth/withAuth';
 
 import Link from 'next/link';
 

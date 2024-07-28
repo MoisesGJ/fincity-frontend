@@ -1,4 +1,4 @@
-import { scaleFactor } from '@/services/Kaboom/constants';
+import { scaleFactor } from '@/libs/Kaboom/constants';
 
 export default class World {
   constructor(kaboomInstance) {

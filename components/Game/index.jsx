@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { initKaboom } from '@/services/Kaboom/init';
+import { initKaboom } from '@/libs/Kaboom/init';
 
-import MainScene from '@/services/Kaboom/Scenes/MainScene';
+import MainScene from '@/libs/Kaboom/Scenes/MainScene';
 
-import Player from '@/services/Kaboom/Classes/Player';
-import World from '@/services/Kaboom/Classes/World';
+import Player from '@/libs/Kaboom/Classes/Player';
+import World from '@/libs/Kaboom/Classes/World';
 
 export default function Game({ session }) {
   const canvasRef = useRef(null);

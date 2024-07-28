@@ -1,4 +1,4 @@
-import { dialogueData } from '@/services/Kaboom/constants';
+import { dialogueData } from '@/libs/Kaboom/constants';
 
 export function displayDialogue(text, onDisplayEnd, refs) {
   const { textboxContainerRef, dialogueRef, closeBtnRef } = refs;
