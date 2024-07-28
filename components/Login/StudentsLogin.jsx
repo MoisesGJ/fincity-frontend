@@ -28,7 +28,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
         });
 
         if (res.ok) {
-          return router.push('/game');
+          return router.push('/student/game');
         } else {
           handleNotify(res.error.message || res.error.toString());
           reset();

@@ -99,7 +99,7 @@ function Dashboard({ session }) {
             {/* Sidebar content here */}
             <li>
               <Link
-                href={'/dashboard'}
+                href={'/teacher/dashboard'}
                 className="flex items-center"
               >
                 <svg

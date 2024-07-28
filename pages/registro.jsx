@@ -15,12 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loading from '@/components/LoadingPage';
-
-const chakra = Chakra_Petch({
-  subsets: ['latin'],
-  weight: ['300', '400', '600'],
-});
+import Loading from '@/components/Globals/LoadingPage';
 
 export default function Page() {
   const router = useRouter();
@@ -56,11 +51,11 @@ export default function Page() {
         firstName: user.first_name,
         lastName: user.last_name,
         redirect: false,
-        callbackUrl: '/dashboard',
+        callbackUrl: '/teacher/dashboard',
       });
 
       if (resAuth.ok) {
-        router.push('/dashboard');
+        router.push('/teacher/dashboard');
       } else {
         reset();
         notify(resAuth.error.message || resAuth.error.toString());
@@ -99,8 +94,8 @@ export default function Page() {
       if (status === 'authenticated') {
         const role = await API.getRole(session.accessToken);
 
-        if (role === 'Estudiante') return router.push('/game');
-        else if (role === 'Profesor') return router.push('/dashboard');
+        if (role === 'Estudiante') return router.push('/student/game');
+        else if (role === 'Profesor') return router.push('/teacher/dashboard');
         else {
           signOut();
         }
@@ -169,9 +164,7 @@ export default function Page() {
           />
         </svg>
       </div>
-      <main
-        className={`${chakra.className} mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
-      >
+      <main className="mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center">
         <div className="xl:max-w-lg xl:w-full">
           <h1 className="text-5xl font-bold xl:text-start">Comencemos...</h1>
           <h2 className="mt-3 text-base">Crea tu nueva cuenta</h2>

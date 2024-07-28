@@ -56,8 +56,8 @@ export default function Page() {
       if (status === 'authenticated') {
         const role = await API.getRole(session.accessToken);
 
-        if (role === 'Estudiante') return router.push('/game');
-        else if (role === 'Profesor') return router.push('/dashboard');
+        if (role === 'Estudiante') return router.push('/student/game');
+        else if (role === 'Profesor') return router.push('/teacher/dashboard');
         else {
           signOut();
         }

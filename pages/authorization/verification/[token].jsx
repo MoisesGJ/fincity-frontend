@@ -52,7 +52,7 @@ export default function Page() {
   const handlerValidateAccount = async (tk, auth) => {
     const validate = await API.validateAccount(tk, auth);
     if (validate.ok) {
-      return router.push('/dashboard');
+      return router.push('/teacher/dashboard');
     } else {
       toast.error('Validación prohibida', {
         position: 'top-center',

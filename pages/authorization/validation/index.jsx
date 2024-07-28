@@ -46,7 +46,7 @@ export default function Page() {
         if (response.user) setEmail(response.user.email);
         setLoading(false);
       } else {
-        router.push('/dashboard');
+        router.push('/teacher/dashboard');
       }
     };
 

@@ -27,7 +27,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
           redirect: false,
         });
 
-        if (res.ok) return router.push('/dashboard');
+        if (res.ok) return router.push('/teacher/dashboard');
         else {
           handleNotify(res.error.message || res.error.toString());
           reset();
@@ -133,7 +133,9 @@ export default function UserLogin({ changeUser, handleNotify }) {
         <button
           type="button"
           className="mb-3 py-2 px-4 flex justify-center items-center relative *:hover:absolute *:hover:start-1/2 *:hover:transform *:hover:-translate-x-1/2  *:hover:ease-in *:hover:duration-200 hover:bg-purple-600 hover:text-purple-600 transition ease-in duration-200 text-center text-purple-600 text-base font-semibold border border-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-xl border-3 w-80"
-          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+          onClick={() =>
+            signIn('google', { callbackUrl: '/teacher/dashboard' })
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

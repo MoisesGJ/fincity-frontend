@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import skullCrasher from '../assets/characters/Skullcrasher.webp';
-import listIcon from '../assets/icons/list-icon.webp';
-import pigIcon from '../assets/icons/pig-icon.webp';
-import cartIcon from '../assets/icons/cart-icon.webp';
-import tasksIcon from '../assets/icons/tasks-icon.webp';
-import logo from '../assets/Fincity_Logo.webp'; // Importa el logo
+import skullCrasher from '@/public/assets/characters/Skeleton.webp';
+import listIcon from '@/public/assets/icons/list-icon.webp';
+import pigIcon from '@/public/assets/icons/pig-icon.webp';
+import cartIcon from '@/public/assets/icons/cart-icon.webp';
+import tasksIcon from '@/public/assets/icons/tasks-icon.webp';
+import logo from '@/public/assets/Fincity_Logo.webp'; // Importa el logo
 import LandingPageCard from '../components/LandingPage/LandingPageCard';
 import Link from 'next/link';
 
@@ -199,9 +199,7 @@ export default function Home() {
                 mientras administran sus ganancias y eligen cómo gastarlas.
               </p>
             </div>
-            <div className="bg-[#5D269A]">
-              {/* Aquí se supone van unas ondas*/}
-            </div>
+            <div className="bg-[#5D269A]"></div>
           </div>
         </section>
         <section className="text-[#09090b] relative min-h-96 flex flex-col justify-center items-center gap-6 text-center p-8 bg-[#5D269A]">
