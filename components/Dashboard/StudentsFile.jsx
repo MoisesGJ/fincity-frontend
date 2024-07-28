@@ -54,7 +54,7 @@ export default function StudentsFile({ session, update, updatePage }) {
       {loader && (
         <div
           role="status"
-          className="absolute top-0 start-0 z-50 backdrop-blur-sm bg-white/30 min-h-screen w-full flex justify-center items-center"
+          className="absolute top-0 start-0 z-50 backdrop-blur-sm bg-white/30 min-h-[100dvh] w-full flex justify-center items-center"
         >
           <svg
             aria-hidden="true"

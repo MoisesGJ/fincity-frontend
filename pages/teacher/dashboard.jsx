@@ -29,7 +29,7 @@ function Dashboard({ session }) {
   }, [session, update]);
 
   return (
-    <main className="bg-[#E4E4E7] min-h-screen min-w-screen">
+    <main className="bg-[#E4E4E7] min-h-[100dvh] min-w-screen">
       <CreateGroup
         session={session}
         update={setUpdate}

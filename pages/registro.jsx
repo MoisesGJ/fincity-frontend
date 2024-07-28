@@ -110,7 +110,7 @@ export default function Page() {
   }, [error]);
 
   return (
-    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+    <div className="flex flex-col xl:flex-row-reverse xl:min-h-[100dvh] w-screen">
       {loader && <Loading />}
       <div className="relative xl:w-1/2">
         <svg

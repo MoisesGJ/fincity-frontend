@@ -12,7 +12,7 @@ export default function Page({ logOut, email, sendEmail }) {
 
   return (
     <main
-      className={`flex justify-center items-center w-full min-h-screen bg-slate-50 ${styles.bgPattern}`}
+      className={`flex justify-center items-center w-full min-h-[100dvh] bg-slate-50 ${styles.bgPattern}`}
     >
       <div className="bg-slate-50 rounded-xl flex flex-col items-center justify-around h-96 w-screen md:w-1/2">
         <div className="relative -top-16 md:-top-8">

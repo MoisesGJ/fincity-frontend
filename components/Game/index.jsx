@@ -92,7 +92,7 @@ export default function Game({ session }) {
 
         <canvas
           ref={canvasRef}
-          className="min-h-screen"
+          className="min-h-[100dvh]"
         ></canvas>
       </div>
     </main>
