@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import MyAdapter from '@/services/db/adapter';
+import MyAdapter from '@/services/DB/adapter';
 import API from '@/services/API';
 
 export const authOptions = {
