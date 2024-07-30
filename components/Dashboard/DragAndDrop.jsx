@@ -5,13 +5,13 @@ import { FileUploader } from 'react-drag-drop-files';
 
 const fileTypes = ['CSV'];
 
-export default function DragDrop({ status, update }) {
+export default function DragDrop({ status, create }) {
   const handleChange = (file) => {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        update(results.data);
+        create(results.data);
       },
     });
   };

@@ -1,29 +1,31 @@
+import API from '@/services/API/teacher.api';
+
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { toast, Bounce, ToastContainer } from 'react-toastify';
-
 import DragDrop from './DragAndDrop';
-import API from '@/services/API';
 import Loading from '../Globals/LoadingPage';
 
-export default function StudentsFile({ session, update, updatePage, error }) {
+export default function StudentsFile({ session, update, students }) {
   const [dragDrop, setDragDrop] = useState(false);
   const [loader, setLoader] = useState(false);
   const [studentsModal, setStudentsModal] = useState(true);
 
   const handlerCreateStudents = async (data) => {
+    setStudentsModal(false);
     setLoader(true);
-    const students = await API.createStudents(session.accessToken, data);
 
-    if (students) {
+    const newstudents = await API.createStudents(session.accessToken, data);
+
+    if (!students) {
+      setStudentsModal(true);
       setLoader(false);
-      update(true);
-      updatePage(true);
-    } else {
-      setLoader(false);
-      error({ students: null });
+      return update({ students: false });
     }
+
+    setLoader(false);
+    students(newstudents);
+    return update({ students: true });
   };
 
   return (
@@ -40,17 +42,15 @@ export default function StudentsFile({ session, update, updatePage, error }) {
               Añadamos un par de alumnos...
             </h2>
             <div className="flex flex-col justify-center items-center my-10">
-              <Link
-                href={'#'}
+              <button
                 onClick={() => setDragDrop(!dragDrop)}
                 className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-5 text-center my-auto w-full md:w-96"
               >
                 Desde un archivo
-              </Link>
+              </button>
               <DragDrop
                 status={dragDrop}
-                update={handlerCreateStudents}
-                updatePage={updatePage}
+                create={handlerCreateStudents}
               />
               <div className="inline-flex items-center justify-center w-full max-w-xl relative ">
                 <hr className="w-full md:w-96 h-px my-6 bg-gray-600 border-0 " />
@@ -75,7 +75,6 @@ export default function StudentsFile({ session, update, updatePage, error }) {
           </form>
         </dialog>
       )}
-      <ToastContainer />
     </>
   );
 }

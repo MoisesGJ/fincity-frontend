@@ -1,14 +1,13 @@
-import API from '@/services/API';
-import { useRouter } from 'next/router';
+import API from '@/services/API/teacher.api';
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast, Bounce, ToastContainer } from 'react-toastify';
+
 import Loading from '../Globals/LoadingPage';
 
-export default function CreateGroup({ session, update, error }) {
-  const router = useRouter();
-  const [loader, setLoader] = useState(false);
+export default function CreateGroup({ session, update, group }) {
   const [groupModal, setGroupModal] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -18,25 +17,25 @@ export default function CreateGroup({ session, update, error }) {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setGroupModal(false);
     setLoader(true);
-    const group = await API.createGroup(session.accessToken, {
+
+    const newgroup = await API.createGroup(session.accessToken, {
       status: true,
       ...data,
     });
 
-    if (group) {
-      setLoader(false);
+    setLoader(false);
 
-      setGroupModal(false);
-
-      update(true);
-    } else {
-      setLoader(false);
-
-      error({ group: null });
+    if (!group) {
+      setGroupModal(true);
+      return update({ group: null });
     }
 
     reset();
+
+    group(newgroup);
+    return update({ group: true });
   };
 
   return (
@@ -186,7 +185,6 @@ export default function CreateGroup({ session, update, error }) {
           </form>
         </dialog>
       )}
-      <ToastContainer />
     </>
   );
 }

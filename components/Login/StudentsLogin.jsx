@@ -11,7 +11,6 @@ export default function UserLogin({ changeUser, handleNotify }) {
 
   const {
     register,
-    watch,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,

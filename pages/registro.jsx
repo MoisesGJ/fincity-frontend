@@ -1,10 +1,9 @@
 import { useSession, getSession } from 'next-auth/react';
 
-import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
 import API from '../services/API';
 
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
 import { useForm } from 'react-hook-form';
 
