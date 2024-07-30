@@ -1,26 +1,20 @@
 import { useSession, getSession } from 'next-auth/react';
 
-import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
 import API from '../services/API';
 
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
 import { useForm } from 'react-hook-form';
 
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../components/Globals/ErrorMessage';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useSearchParams } from 'next/navigation';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loading from '@/components/LoadingPage';
-
-const chakra = Chakra_Petch({
-  subsets: ['latin'],
-  weight: ['300', '400', '600'],
-});
+import Loading from '@/components/Globals/LoadingPage';
 
 export default function Page() {
   const router = useRouter();
@@ -56,11 +50,11 @@ export default function Page() {
         firstName: user.first_name,
         lastName: user.last_name,
         redirect: false,
-        callbackUrl: '/dashboard',
+        callbackUrl: '/teacher/dashboard',
       });
 
       if (resAuth.ok) {
-        router.push('/dashboard');
+        router.push('/teacher/dashboard');
       } else {
         reset();
         notify(resAuth.error.message || resAuth.error.toString());
@@ -99,8 +93,8 @@ export default function Page() {
       if (status === 'authenticated') {
         const role = await API.getRole(session.accessToken);
 
-        if (role === 'Estudiante') return router.push('/game');
-        else if (role === 'Profesor') return router.push('/dashboard');
+        if (role === 'Estudiante') return router.push('/student/game');
+        else if (role === 'Profesor') return router.push('/teacher/dashboard');
         else {
           signOut();
         }
@@ -115,7 +109,7 @@ export default function Page() {
   }, [error]);
 
   return (
-    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+    <div className="flex flex-col xl:flex-row-reverse xl:min-h-[100dvh] w-screen">
       {loader && <Loading />}
       <div className="relative xl:w-1/2">
         <svg
@@ -169,9 +163,7 @@ export default function Page() {
           />
         </svg>
       </div>
-      <main
-        className={`${chakra.className} mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
-      >
+      <main className="mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center">
         <div className="xl:max-w-lg xl:w-full">
           <h1 className="text-5xl font-bold xl:text-start">Comencemos...</h1>
           <h2 className="mt-3 text-base">Crea tu nueva cuenta</h2>

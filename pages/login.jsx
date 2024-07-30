@@ -43,7 +43,7 @@ export default function Page() {
     const stateLog = window.localStorage.getItem('Login');
     if (stateLog === 'Profesor') {
       setUser(true);
-    } else if (stateLog === 'Estudiante') {
+    } else {
       setUser(false);
     }
   }, []);
@@ -56,8 +56,8 @@ export default function Page() {
       if (status === 'authenticated') {
         const role = await API.getRole(session.accessToken);
 
-        if (role === 'Estudiante') return router.push('/game');
-        else if (role === 'Profesor') return router.push('/dashboard');
+        if (role === 'Estudiante') return router.push('/student/game');
+        else if (role === 'Profesor') return router.push('/teacher/dashboard');
         else {
           signOut();
         }
@@ -79,7 +79,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col xl:flex-row-reverse xl:min-h-screen w-screen">
+    <div className="flex flex-col xl:flex-row-reverse xl:min-h-[100dvh] w-screen">
       <div
         className="relative xl:w-1/2"
         key={key}

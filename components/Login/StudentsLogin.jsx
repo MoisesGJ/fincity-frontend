@@ -1,18 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import ErrorMessage from '../ErrorMessage';
-import Loading from '../LoadingPage';
+import ErrorMessage from '../Globals/ErrorMessage';
+import Loading from '../Globals/LoadingPage';
 
 export default function UserLogin({ changeUser, handleNotify }) {
   const router = useRouter();
 
   const {
     register,
-    watch,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
@@ -28,7 +26,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
         });
 
         if (res.ok) {
-          return router.push('/game');
+          return router.push('/student/game');
         } else {
           handleNotify(res.error.message || res.error.toString());
           reset();
@@ -39,7 +37,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
 
   return (
     <>
-      {isSubmitting && <Loading />}
+      {isSubmitting && <Loading student={true} />}
       <main
         className={`mt-5 p-5 md:p-9 xl:w-full flex flex-col justify-center items-center`}
       >
@@ -127,9 +125,8 @@ export default function UserLogin({ changeUser, handleNotify }) {
         </form>
 
         <p className="text-center text-sm p-3 mt-5">
-          <Link
+          <button
             className="text-[#FD6A00] font-bold text-md btn shadow-none bg-white border-none  hover:bg-white hover:text-black"
-            href={'#'}
             onClick={() => changeUser(true)}
           >
             <svg
@@ -141,7 +138,7 @@ export default function UserLogin({ changeUser, handleNotify }) {
               <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
             </svg>{' '}
             Soy un profesor
-          </Link>
+          </button>
         </p>
       </main>
     </>

@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { initKaboom } from '@/services/Kaboom/init';
+import { initKaboom } from '@/libs/Kaboom/init';
 
-import MainScene from '@/services/Kaboom/Scenes/MainScene';
+import MainScene from '@/libs/Kaboom/Scenes/MainScene';
 
-import Player from '@/services/Kaboom/Classes/Player';
-import World from '@/services/Kaboom/Classes/World';
+import Player from '@/libs/Kaboom/Classes/Player';
+import World from '@/libs/Kaboom/Classes/World';
 
 export default function Game({ session }) {
   const canvasRef = useRef(null);
   const textboxContainerRef = useRef(null);
   const dialogueRef = useRef(null);
   const closeBtnRef = useRef(null);
+
+  const { user } = session;
 
   const [map, setMap] = useState(null);
 
@@ -55,15 +57,15 @@ export default function Game({ session }) {
   }, [map]);
 
   return (
-    <main className="overflow-hidden text-[2rem] min-h-screen">
-      <div className="relative w-full h-full">
+    <main className="overflow-hidden text-[2rem] min-h-[100dvh]">
+      <div className="relative w-full h-[100dvh]">
         <div id="ui">
           <p className="text-gray-200 select-none absolute left-5 top-[1vh] flex flex-col">
-            ¡Hola, {session.first_name}!
+            ¡Hola, {user.first_name}!
           </p>
           <div
             id="textbox-container"
-            className="hidden"
+            className="absolute bottom-0 w-full hidden"
             ref={textboxContainerRef}
           >
             <div
@@ -90,7 +92,7 @@ export default function Game({ session }) {
 
         <canvas
           ref={canvasRef}
-          className="min-h-screen"
+          className="min-h-[100dvh]"
         ></canvas>
       </div>
     </main>

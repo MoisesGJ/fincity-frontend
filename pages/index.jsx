@@ -1,16 +1,16 @@
 import Image from 'next/image';
-import skullCrasher from '../assets/characters/Skullcrasher.webp';
-import listIcon from '../assets/icons/list-icon.webp';
-import pigIcon from '../assets/icons/pig-icon.webp';
-import cartIcon from '../assets/icons/cart-icon.webp';
-import tasksIcon from '../assets/icons/tasks-icon.webp';
-import logo from '../assets/Fincity_Logo.webp'; // Importa el logo
-import LandingPageCard from '../components/LandingPageCard';
+import skullCrasher from '@/public/assets/characters/Skeleton.webp';
+import listIcon from '@/public/assets/icons/list-icon.webp';
+import pigIcon from '@/public/assets/icons/pig-icon.webp';
+import cartIcon from '@/public/assets/icons/cart-icon.webp';
+import tasksIcon from '@/public/assets/icons/tasks-icon.webp';
+import logo from '@/public/assets/Fincity_Logo.webp'; // Importa el logo
+import LandingPageCard from '../components/LandingPage/LandingPageCard';
 import Link from 'next/link';
 
 export default function Home() {
   return (
-    <>
+    <div className="w-screen">
       <header className="flex justify-between items-center py-4 px-8">
         <Image
           src={logo}
@@ -39,36 +39,39 @@ export default function Home() {
       </header>
       <main>
         <section className="bg-zinc-50">
-          <div className="relative rounded-s-[300px] bg-gradient-to-l from-purple-500 to-violet-600 animate-slideInFromRight">
-            <div className="container mx-auto px-4 text-center py-24 text-white">
-              <h1 className="text-4xl font-normal leading-9 mt-24">
-                Ampliando los horizontes financieros de tus hijos
-              </h1>
-              <p className="text-stone-210 text-xl font-normal leading-10 opacity-100 mt-4">
-                Creamos contenido y actividades para que tus hijos aprendan a
-                tener independencia financiera desde temprana edad de una manera
-                didáctica y divertida
-              </p>
-            </div>
+          <div className="rounded-s-[150px] lg:rounded-none bg-gradient-to-l from-purple-500 to-violet-600 p-5 flex justify-center lg:items-center h-60 lg:h-72 flex-col overflow-hidden text-gray-50 text-end">
+            <h1 className="text-4xl">
+              Ampliando los horizontes financieros de tus hijos
+            </h1>
+            <p className="text-base opacity-100 ">
+              Creamos contenido y actividades para que tus hijos aprendan a
+              tener independencia financiera
+            </p>
           </div>
         </section>
         <section className="container mx-auto px-4 py-8 flex flex-wrap justify-between">
-          <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center mb-6 w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black text-lg font-medium mb-3">
-              Para los maestros
+          <div className="rounded-3xl  bg-gradient-to-l from-purple-500 to-violet-600  flex flex-col items-center justify-center mb-6 w-full md:w-5/12 h-72 p-4 text-gray-50">
+            <h2 className="text-center text-lg font-medium mb-3">
+              Para los{' '}
+              <span className="text-purple-600 bg-white font-bold p-1 rounded-md">
+                maestros
+              </span>
             </h2>
-            <p className="text-center text-gray-700 text-base font-normal leading-6">
+            <p className="text-center text-base font-normal leading-6">
               Ofrecemos a los educadores una variedad de recursos y herramientas
               para apoyar su enseñanza de educación financiera en el aula. Nos
               esforzamos por ser un recurso integral para educadores que desean
               enseñar educación financiera de manera efectiva y emocionante.
             </p>
           </div>
-          <div className="rounded-3xl bg-purple-200 bg-opacity-20 flex flex-col items-center justify-center w-full md:w-5/12 h-72 p-4">
-            <h2 className="text-center text-black text-lg font-medium mb-3">
-              Para los estudiantes
+          <div className="rounded-3xl bg-gradient-to-l from-purple-500 to-violet-600 flex flex-col items-center justify-center w-full md:w-5/12 h-72 p-4 text-gray-50">
+            <h2 className="text-center  text-lg font-medium mb-3">
+              Para los{' '}
+              <span className="text-[#FD6A00] bg-white font-bold p-1 rounded-md">
+                estudiantes
+              </span>
             </h2>
-            <p className="text-center text-gray-700 text-base font-normal leading-6">
+            <p className="text-center text-base font-normal leading-6">
               Los niños pueden aprender sobre el mundo de las finanzas de una
               manera divertida y accesible. Desde entender el valor del dinero
               hasta aprender a ahorrar y gastar de manera inteligente, el
@@ -199,9 +202,7 @@ export default function Home() {
                 mientras administran sus ganancias y eligen cómo gastarlas.
               </p>
             </div>
-            <div className="bg-[#5D269A]">
-              {/* Aquí se supone van unas ondas*/}
-            </div>
+            <div className="bg-[#5D269A]"></div>
           </div>
         </section>
         <section className="text-[#09090b] relative min-h-96 flex flex-col justify-center items-center gap-6 text-center p-8 bg-[#5D269A]">
@@ -319,6 +320,6 @@ export default function Home() {
           Todos los derechos reservados
         </span>
       </footer>
-    </>
+    </div>
   );
 }

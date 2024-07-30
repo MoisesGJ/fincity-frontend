@@ -30,8 +30,8 @@ export default function Home() {
   }, [status, router, session]);
 
   return (
-    <div className="min-h-screen w-screen">
-      <Game session={session.user} />
+    <div className="overflow-hidden min-h-[100dvh] w-screen">
+      {session && <Game session={session} />}
     </div>
   );
 

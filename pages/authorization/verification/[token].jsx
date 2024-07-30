@@ -37,7 +37,7 @@ export default function Page() {
         setLoading(false);
       } else {
         router.push(
-          '/login?Error=Inicia%20sesi%C3%B3n%20para%20poder%20continuar'
+          '/login?error=Inicia%20sesi%C3%B3n%20para%20poder%20continuar'
         );
       }
     };
@@ -52,9 +52,9 @@ export default function Page() {
   const handlerValidateAccount = async (tk, auth) => {
     const validate = await API.validateAccount(tk, auth);
     if (validate.ok) {
-      return router.push('/dashboard');
+      return router.push('/teacher/dashboard');
     } else {
-      toast.error(validate.error.message, {
+      toast.error('Validación fallida', {
         position: 'top-center',
         autoClose: 3000,
         hideProgressBar: false,
@@ -66,7 +66,7 @@ export default function Page() {
         transition: Bounce,
       });
       setTimeout(() => {
-        return router.push('/auth/notValidate');
+        return router.push('/authorization/validation');
       }, 2000);
     }
   };
@@ -75,7 +75,7 @@ export default function Page() {
     <>
       <ToastContainer />
       <main
-        className={`${chakra.className} flex justify-center items-center w-screen min-h-screen bg-slate-50 ${styles.bgCircles}`}
+        className={`${chakra.className} flex justify-center items-center w-screen min-h-screen bg-slate-50 ${styles.bgPattern}`}
       >
         <div className="bg-slate-50 rounded-xl flex flex-col items-center justify-around h-96 w-full md:w-1/2">
           <div className="relative px-2 md:px-5 text-base text-purple-900 text-center mt-10 w-full">

@@ -1,4 +1,5 @@
-import { withAuth } from '@/services/withAuth';
+import API from '@/services/API/teacher.api';
+import { withAuth } from '@/services/Auth/withAuth';
 
 import Link from 'next/link';
 
@@ -6,12 +7,46 @@ import CreateGroup from '@/components/Dashboard/CreateGroup';
 import StudentsFile from '@/components/Dashboard/StudentsFile';
 import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import API from '@/services/API';
+
+import 'react-toastify/dist/ReactToastify.css';
+
+import { toast, Bounce, ToastContainer } from 'react-toastify';
 
 function Dashboard({ session }) {
   const [group, setGroup] = useState(false);
-  const [students, setStudents] = useState(false);
+  const [students, setStudents] = useState([]);
   const [update, setUpdate] = useState(null);
+
+  const notify = (msg, boolean) => {
+    if (!boolean)
+      return toast.error(msg, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Bounce,
+      });
+
+    return toast.success(msg, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+      transition: Bounce,
+    });
+  };
+
+  const addStudents = (newStudents) => {
+    setStudents([...students, ...newStudents]);
+  };
 
   useEffect(() => {
     const handleAsync = async () => {
@@ -19,22 +54,38 @@ function Dashboard({ session }) {
 
       if (group) setGroup(group);
 
-      const students = await API.getStudents(session.accessToken);
-      if (students) setStudents(students);
+      const newStudents = await API.getStudents(session.accessToken);
+      if (newStudents) setStudents(newStudents);
     };
 
     handleAsync();
-  }, [session, update]);
+  }, [session]);
+
+  useEffect(() => {
+    if (!update) return;
+
+    if (update.group) {
+      //setGroup(update.group);
+      notify('¡Grupo creado exitosamente!', true);
+    } else if (update.students) {
+      // addStudents(update.students);
+      notify('¡Los alumnos se añadieron!', true);
+    } else {
+      notify('Ocurrió un error', false);
+    }
+  }, [update]);
 
   return (
-    <main className="bg-[#E4E4E7] min-h-screen min-w-screen">
+    <main className="bg-[#E4E4E7] min-h-[100dvh] min-w-screen">
       <CreateGroup
         session={session}
         update={setUpdate}
+        group={setGroup}
       />
       <StudentsFile
         session={session}
-        update={setStudents}
+        update={setUpdate}
+        students={addStudents}
       />
       <nav className="flex flex-col py-16 md:py-0 md:flex-row p-4 justify-center items-center gap-4 h-20 bg-[#FAFAFA] shadow-md relative">
         <Link
@@ -46,7 +97,7 @@ function Dashboard({ session }) {
         <div className="border-2 border-[#5D269A] rounded-xl flex justify-between px-3 w-full max-w-96">
           <input
             type="text"
-            className="rounded-xl bg-[#FAFAFA] p-2"
+            className="p-2 w-full bg-transparent focus:outline-none focus:ring-0 active:outline-none active:ring-0"
             placeholder="Buscar"
           />
           <button className="">
@@ -93,10 +144,9 @@ function Dashboard({ session }) {
             className="drawer-overlay"
           ></label>
           <div className="menu bg-[#5D269A] min-h-full w-80 p-4 text-white">
-            {/* Sidebar content here */}
             <li>
               <Link
-                href={'/dashboard'}
+                href={'/teacher/dashboard'}
                 className="flex items-center"
               >
                 <svg
@@ -156,17 +206,16 @@ function Dashboard({ session }) {
             <section>
               <div className="flex flex-row place-content-between">
                 <p className="m-5">Grupo</p>
-                <Link
-                  href={'#Crear-Grupo'}
+                <button
                   onClick={() =>
                     document.getElementById('create_group').showModal()
                   }
                   className={`${
-                    group !== null && (group ? 'hidden' : 'block')
+                    group ? 'hidden' : 'block'
                   } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3`}
                 >
                   Crear grupo
-                </Link>
+                </button>
               </div>
 
               {group ? (
@@ -183,21 +232,20 @@ function Dashboard({ session }) {
               <div className="flex flex-row place-content-between">
                 <p className="m-5">Alumnos</p>
                 {group && (
-                  <Link
-                    href={'#Agregar-Alumnos'}
+                  <button
                     onClick={() =>
                       document.getElementById('create_students').showModal()
                     }
                     className="hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white  rounded-lg p-2 m-4 end"
                   >
                     Agregar
-                  </Link>
+                  </button>
                 )}
               </div>
               {group ? (
-                students ? (
+                students.length > 0 ? (
                   <p className="m-5">
-                    {students.map(({ _id, first_name, last_name }) => {
+                    {students?.map(({ _id, first_name, last_name }) => {
                       return (
                         <span
                           key={_id}
@@ -240,6 +288,7 @@ function Dashboard({ session }) {
           </div>
         </sidebar>*/}
       </div>
+      <ToastContainer />
     </main>
   );
 }
