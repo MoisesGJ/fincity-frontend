@@ -1,7 +1,7 @@
 import { useSession, getSession } from 'next-auth/react';
 
 import Link from 'next/link';
-import API from '../services/API';
+import API from '@/services/API/account.api';
 
 import { signIn, signOut } from 'next-auth/react';
 
@@ -37,12 +37,10 @@ export default function Page() {
     try {
       const userExists = await API.getAccountByEmail(user.email);
 
-      if (userExists) {
-        router.push(
+      if (!userExists.error)
+        return router.push(
           '/registro?error=El%20correo%20ya%20est%C3%A1%20vinculado%20a%20una%20cuenta'
         );
-        return;
-      }
 
       const resAuth = await signIn('usercreate', {
         email: user.email,

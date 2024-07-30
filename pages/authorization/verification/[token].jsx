@@ -1,6 +1,6 @@
 import styles from '@/components/EmailVerify/styles.module.css';
 
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,7 @@ export default function Page() {
 
       const isVerified = await API.validateAccountVerify(session.user.id);
 
-      if (session && !isVerified) {
+      if (session && isVerified.error) {
         setLoading(false);
       } else {
         router.push(
@@ -51,7 +51,7 @@ export default function Page() {
 
   const handlerValidateAccount = async (tk, auth) => {
     const validate = await API.validateAccount(tk, auth);
-    if (validate.ok) {
+    if (!validate.error) {
       return router.push('/teacher/dashboard');
     } else {
       toast.error('Validación fallida', {

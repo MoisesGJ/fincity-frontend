@@ -1,4 +1,4 @@
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ export default function Page() {
 
       const isVerified = await API.validateAccountVerify(session.user.id);
 
-      if (session && !isVerified) {
+      if (session && isVerified.error) {
         const token = window.localStorage.getItem('emailValidate');
 
         if (token && token.length > 1) {
@@ -69,7 +69,7 @@ export default function Page() {
       session.accessToken
     );
 
-    if (emailSended) {
+    if (!emailSended.error) {
       setLoader(false);
       toast.success('¡Te reenviamos el correo!', {
         position: 'top-center',

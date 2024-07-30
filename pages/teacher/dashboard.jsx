@@ -44,8 +44,11 @@ function Dashboard({ session }) {
     });
   };
 
-  const addStudents = (newStudents) => {
-    setStudents([...students, ...newStudents]);
+  const addStudents = (stds) => {
+    if (students.length == 0) return setStudents(stds);
+
+    const newStudents = students.concat(stds);
+    setStudents(newStudents);
   };
 
   useEffect(() => {
@@ -65,14 +68,18 @@ function Dashboard({ session }) {
     if (!update) return;
 
     if (update.group) {
-      //setGroup(update.group);
       notify('¡Grupo creado exitosamente!', true);
     } else if (update.students) {
-      // addStudents(update.students);
       notify('¡Los alumnos se añadieron!', true);
-    } else {
-      notify('Ocurrió un error', false);
+    } else if (!update.group || update.students) {
+      notify(update.message, false);
     }
+
+    console.log(update);
+
+    return () => {
+      setUpdate(null);
+    };
   }, [update]);
 
   return (
@@ -200,7 +207,7 @@ function Dashboard({ session }) {
         </div>
       </div>
       <label htmlFor="drawer-"></label>
-      <div className="flex flex-row  w-full h-full mt-5">
+      <div className="flex flex-row  w-full h-full py-5">
         <div className="flex flex-col gap-5 place-content-between lg:mx-16 w-full px-10">
           <div className="bg-[#FAFAFA] rounded-3xl grow h-36 lg:h-72 shadow-xl">
             <section>

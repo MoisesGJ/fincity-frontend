@@ -2,7 +2,7 @@ import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import MyAdapter from '@/services/db/adapter';
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 
 export const authOptions = {
   session: {
@@ -11,8 +11,8 @@ export const authOptions = {
 
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      clientId: process.env.NEXTAUTH_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXTAUTH_GOOGLE_CLIENT_SECRET,
       profile: (profile) => {
         return {
           id: profile.sub,
@@ -38,13 +38,13 @@ export const authOptions = {
       async authorize(credentials, req) {
         const userExists = await API.getAccountByEmail(credentials.email);
 
-        if (userExists) {
+        if (!userExists.error) {
           const user = await API.authenticateUser(
             credentials.email,
             credentials.password
           );
 
-          if (user) {
+          if (!user.error) {
             return user;
           } else {
             throw new Error('Ya existe un cuenta con ese correo');
@@ -79,14 +79,14 @@ export const authOptions = {
       async authorize(credentials, req) {
         const userExists = await API.getAccountByEmail(credentials.email);
 
-        if (!userExists) throw new Error('Credenciales inválidas');
+        if (userExists.error) throw new Error('Credenciales inválidas');
 
         const user = await API.authenticateUser(
           credentials.email,
           credentials.password
         );
 
-        if (!user) throw new Error('Credenciales inválidas');
+        if (user.error) throw new Error('Credenciales inválidas');
 
         return user;
       },
@@ -106,7 +106,7 @@ export const authOptions = {
           credentials.password
         );
 
-        if (!user)
+        if (user.error)
           throw new Error('Tu usuario y/o contraseña parecen no ser correctos');
 
         return user;

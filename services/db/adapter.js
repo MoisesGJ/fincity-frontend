@@ -1,15 +1,13 @@
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 
 export default function MyAdapter() {
   return {
     async createUser(user) {
       const existsUser = await API.getAccountByEmail(user.email);
 
-      if (existsUser) throw new Error('El usuario ya existe');
+      if (!existsUser.error) throw new Error(existsUser.error);
 
       const response = await API.createNewUser(user);
-
-      console.log(response);
 
       return {
         id: response._doc._id,

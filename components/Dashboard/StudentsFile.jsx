@@ -17,15 +17,16 @@ export default function StudentsFile({ session, update, students }) {
 
     const newstudents = await API.createStudents(session.accessToken, data);
 
-    if (!students) {
+    if (newstudents.error) {
       setStudentsModal(true);
       setLoader(false);
-      return update({ students: false });
+      return update({ students: false, message: newstudents.error });
+    } else {
+      setStudentsModal(true);
+      setLoader(false);
+      students(newstudents);
+      return update({ students: true });
     }
-
-    setLoader(false);
-    students(newstudents);
-    return update({ students: true });
   };
 
   return (
