@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 
 export function withAuth(Component) {
   return function WithAuth(props) {
@@ -13,9 +13,7 @@ export function withAuth(Component) {
       const checkEmailVerification = async () => {
         if (status === 'loading') return;
 
-        if (status === 'unauthenticated') {
-          return router.push('/login');
-        }
+        if (status === 'unauthenticated') return router.push('/login');
 
         const role = await API.getRole(session.accessToken);
 
@@ -23,8 +21,9 @@ export function withAuth(Component) {
           return router.push('/login?error=Hubo%20un%20error');
 
         const isVerified = await API.validateAccountVerify(session.user.id);
+        console.log('IS VERIFIEDi', isVerified);
 
-        if (session && isVerified) {
+        if (session && !isVerified.error) {
           setLoading(false);
         } else {
           router.push('/authorization/validation');

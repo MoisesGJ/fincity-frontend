@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 import UserLogin from '@/components/Login/UserLogin';
 import StudentsLogin from '@/components/Login/StudentsLogin';
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 
 export default function Page() {
   const [user, setUser] = useState(null);

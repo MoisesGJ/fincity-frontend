@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import API from '@/services/API';
+import API from '@/services/API/account.api';
 
 const Game = dynamic(() => import('@/components/Game'), { ssr: false });
 
