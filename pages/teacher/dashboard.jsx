@@ -45,7 +45,7 @@ function Dashboard({ session }) {
   };
 
   const addStudents = (newStudents) => {
-    setStudents([...students, ...newStudents]);
+    setStudents((prevStudents) => [...prevStudents, ...newStudents]);
   };
 
   useEffect(() => {
@@ -65,10 +65,8 @@ function Dashboard({ session }) {
     if (!update) return;
 
     if (update.group) {
-      //setGroup(update.group);
       notify('¡Grupo creado exitosamente!', true);
     } else if (update.students) {
-      // addStudents(update.students);
       notify('¡Los alumnos se añadieron!', true);
     } else {
       notify('Ocurrió un error', false);
