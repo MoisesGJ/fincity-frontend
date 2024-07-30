@@ -27,15 +27,15 @@ export default function CreateGroup({ session, update, group }) {
 
     setLoader(false);
 
-    if (!group) {
-      setGroupModal(true);
-      return update({ group: null });
-    }
-
     reset();
 
-    group(newgroup);
-    return update({ group: true });
+    if (newgroup.error) {
+      setGroupModal(true);
+      return update({ group: false, message: newgroup.error });
+    } else {
+      group(newgroup);
+      return update({ group: true });
+    }
   };
 
   return (
@@ -79,15 +79,15 @@ export default function CreateGroup({ session, update, group }) {
                       message: 'Necesitas llenar este campo',
                     },
                     maxLength: {
-                      value: 15,
-                      message: 'Es necesario máximo 15 caracteres.',
+                      value: 50,
+                      message: 'Es necesario máximo 50 caracteres.',
                     },
                     minLength: {
-                      value: 2,
-                      message: 'Es necesario mínimo dos caracteres.',
+                      value: 3,
+                      message: 'Es necesario mínimo tres caracteres.',
                     },
                     pattern: {
-                      value: /^[a-z ,.'-]+$/i,
+                      value: /^[a-zA-Z0-9\s\-'""]+$/,
                       message: 'Es necesario un nombre válido.',
                     },
                   })}
@@ -118,16 +118,12 @@ export default function CreateGroup({ session, update, group }) {
                       message: 'Necesitas llenar este campo',
                     },
                     maxLength: {
-                      value: 15,
-                      message: 'Es necesario máximo 15 caracteres.',
+                      value: 30,
+                      message: 'Es necesario máximo 30 caracteres.',
                     },
                     minLength: {
-                      value: 2,
-                      message: 'Es necesario mínimo dos caracteres.',
-                    },
-                    pattern: {
-                      value: /^[a-z ,.'-]+$/i,
-                      message: 'Es necesario un nombre válido.',
+                      value: 3,
+                      message: 'Es necesario mínimo tres caracteres.',
                     },
                   })}
                 />
@@ -157,16 +153,12 @@ export default function CreateGroup({ session, update, group }) {
                       message: 'Necesitas llenar este campo',
                     },
                     maxLength: {
-                      value: 15,
-                      message: 'Es necesario máximo 15 caracteres.',
+                      value: 10,
+                      message: 'Es necesario máximo 10 caracteres.',
                     },
                     minLength: {
-                      value: 2,
-                      message: 'Es necesario mínimo dos caracteres.',
-                    },
-                    pattern: {
-                      value: /^[a-z ,.'-]+$/i,
-                      message: 'Es necesario un nombre válido.',
+                      value: 3,
+                      message: 'Es necesario mínimo tres caracteres.',
                     },
                   })}
                 />

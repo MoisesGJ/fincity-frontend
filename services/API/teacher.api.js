@@ -56,13 +56,11 @@ const API = {
 
       const response = await r.json();
 
-      console.log(response);
-
-      if (!response.ok) return null;
+      if (!response.ok) return { error: response.error };
 
       return response.data.group;
     } catch (e) {
-      console.log(e);
+      return { error: response.error };
     }
   },
 
@@ -83,11 +81,13 @@ const API = {
 
       const response = await r.json();
 
-      if (!response.ok) return null;
+      console.log(response);
+
+      if (!response.ok) return { error: response.error };
 
       return response.data.class;
     } catch (e) {
-      console.log(e);
+      return { error: response.error };
     }
   },
 };
