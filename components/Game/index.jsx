@@ -3,6 +3,8 @@ import { initKaboom } from '@/libs/Kaboom/init';
 
 import MainScene from '@/libs/Kaboom/Scenes/MainScene';
 
+import Drawer from '../Globals/Drawer';
+
 import Player from '@/libs/Kaboom/Classes/Player';
 import World from '@/libs/Kaboom/Classes/World';
 
@@ -59,9 +61,10 @@ export default function Game({ session }) {
   return (
     <main className="overflow-hidden text-[2rem] min-h-[100dvh]">
       <div className="relative w-full h-[100dvh]">
+        <Drawer session={session} />
         <div id="ui">
-          <p className="text-gray-200 select-none absolute left-5 top-[1vh] flex flex-col">
-            ¡Hola, {user.first_name}!
+          <p className="text-gray-200 select-none absolute end-5 top-[1vh] flex flex-col">
+            ¡Bienvenidx, {user.first_name}!
           </p>
           <div
             id="textbox-container"

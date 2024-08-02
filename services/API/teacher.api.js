@@ -65,7 +65,7 @@ const API = {
 
   async createStudents(auth, data) {
     try {
-      const r = await fetch(`${BASE_URI}/users/students`, {
+      const r = await fetch(`${BASE_URI}/students`, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain',
@@ -75,13 +75,27 @@ const API = {
         body: JSON.stringify(data),
       });
 
-      const response = await r.json();
+      if (!r.ok) {
+        return { error: r.error || 'Hubo un error' };
+      }
 
-      console.log(response);
+      const text = await r.text();
 
-      if (!response.ok) return { error: response.error };
+      const blob = new Blob(['\ufeff', text]);
 
-      return response.data.class;
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'my_students.csv');
+
+      document.body.appendChild(link);
+      link.click();
+
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      return true;
     } catch (e) {
       return { error: e };
     }

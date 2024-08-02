@@ -22,10 +22,14 @@ export default function MyAdapter() {
     async getUser(id) {
       const user = await API.getAccountById(id);
 
+      if (user.error) return null;
+
       return user;
     },
     async getUserByEmail(email) {
       const user = await API.getAccountByEmail(email);
+
+      if (user.error) return null;
 
       return user;
     },
@@ -33,6 +37,8 @@ export default function MyAdapter() {
       const { providerAccountId } = account;
 
       const user = await API.findByAccessToken(providerAccountId);
+
+      if (user.error) return null;
 
       return user;
     },
@@ -46,6 +52,8 @@ export default function MyAdapter() {
       const { userId, providerAccountId } = account;
 
       const accountUpdated = await API.updatedUser(userId, providerAccountId);
+
+      if (accountUpdated.error) return null;
 
       return { accountUpdated, ...account };
     },
