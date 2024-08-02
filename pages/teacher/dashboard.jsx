@@ -180,7 +180,7 @@ function Dashboard({ session }) {
                                     : `${first_name} ${last_name}`.slice(0, 8) +
                                       '...'}
                                 </span>
-                                <span className="hidden xl:block">
+                                <span className="hidden xl:inline">
                                   {`${first_name} ${last_name}`.length < 17
                                     ? `${first_name} ${last_name}`
                                     : `${first_name} ${last_name}`.slice(
