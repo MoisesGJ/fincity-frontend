@@ -170,9 +170,9 @@ function Dashboard({ session }) {
                             className="grid grid-cols-5 gap-6 items-center"
                           >
                             <div className="col-span-3 w-full grid grid-cols-3">
-                              <span className="col-span-2 xl:col-span-1">
+                              <p className="col-span-2 xl:col-span-1">
                                 <span className="text-xs italic me-3">
-                                  {indexMain + 1}.-
+                                  {indexMain + 1}.-{' '}
                                 </span>
                                 <span className="xl:hidden">
                                   {`${first_name} ${last_name}`.length < 12
@@ -188,7 +188,7 @@ function Dashboard({ session }) {
                                         13
                                       ) + '...'}
                                 </span>
-                              </span>
+                              </p>
                               <span className="text-md italic hidden xl:block">
                                 @{user}
                               </span>
