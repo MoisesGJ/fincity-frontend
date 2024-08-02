@@ -115,7 +115,7 @@ const API = {
 
       const response = await r.json();
 
-      if (!response.ok) return { error: response.error };
+      if (!response.ok) return { error: 'No hay una cuenta' };
 
       return response.data.user;
     } catch (error) {
