@@ -80,7 +80,7 @@ function Dashboard({ session }) {
   }, [update]);
 
   return (
-    <main className="bg-[#E4E4E7] min-h-[100dvh] min-w-screen">
+    <main className="bg-[#E4E4E7] min-h-screen min-w-screen">
       <CreateGroup
         session={session}
         update={setUpdate}
@@ -125,7 +125,9 @@ function Dashboard({ session }) {
                       : group.description.slice(0, 13) + '...'}
                   </span>
                 ) : (
-                  <sapn className="italic">No tienes ningún grupo creado</sapn>
+                  <span className="italic text-xl">
+                    No tienes ningún grupo creado
+                  </span>
                 )}
               </div>
             </section>
@@ -172,7 +174,13 @@ function Dashboard({ session }) {
                                 <span className="text-xs italic me-3">
                                   {indexMain + 1}.-
                                 </span>
-                                <span>
+                                <span className="xl:hidden">
+                                  {`${first_name} ${last_name}`.length < 12
+                                    ? `${first_name} ${last_name}`
+                                    : `${first_name} ${last_name}`.slice(0, 8) +
+                                      '...'}
+                                </span>
+                                <span className="hidden xl:block">
                                   {`${first_name} ${last_name}`.length < 17
                                     ? `${first_name} ${last_name}`
                                     : `${first_name} ${last_name}`.slice(
