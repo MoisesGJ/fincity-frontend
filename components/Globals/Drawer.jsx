@@ -14,7 +14,7 @@ export default function Drawer({ session }) {
         <div className="drawer-content">
           <label
             htmlFor="my-drawer"
-            className="bg-[#5D269A] opacity-70 drawer-button fixed w-9 h-12 md:h-2/3 top-1/2 transition -translate-y-1/2 rounded-r-md md:rounded-r-xl flex items-center justify-center"
+            className="bg-[#5D269A] opacity-70 drawer-button fixed w-9 h-12 md:h-2/3 top-14 md:top-1/2 md:transition md:-translate-y-1/2 rounded-r-md md:rounded-r-xl flex items-center justify-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
