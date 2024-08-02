@@ -1,0 +1,4 @@
+.bgPattern {
+    background: rgb(72, 34, 125);
+    background: linear-gradient(45deg, rgb(72, 34, 125) 25%, rgba(108, 50, 170, 0.9388130252) 65%, rgb(102, 85, 158) 100%);
+}
