@@ -18,10 +18,12 @@ export default function StudentsFile({ session, update, students }) {
     const newstudents = await API.createStudents(session.accessToken, data);
 
     if (newstudents.error) {
+      console.log('ERROR', newstudents);
       setStudentsModal(true);
       setLoader(false);
       return update({ students: false, message: newstudents.error });
     } else {
+      console.log('URL', newstudents);
       setStudentsModal(true);
       setLoader(false);
       students(newstudents);
