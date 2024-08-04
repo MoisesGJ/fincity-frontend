@@ -1,6 +1,10 @@
-export default function Loading({ student }) {
+export default function Loading({ student, tutor }) {
   return (
-    <div className="transition ease-in-out delay-150 fixed z-50 inset-0 backdrop-blur-sm bg-white/30 gap-x-2 flex justify-center items-center">
+    <div
+      className={`transition ease-in-out delay-150 fixed z-50 inset-0 ${
+        tutor ? 'backdrop-blur-xl bg-white/50' : 'backdrop-blur-sm bg-white/30'
+      } gap-x-2 flex justify-center items-center`}
+    >
       <div
         className={`w-5 ${
           student ? 'bg-[#ffdea5]' : 'bg-[#d991c2]'

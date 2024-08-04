@@ -14,7 +14,6 @@ import API from '@/services/API/account.api';
 
 export default function Page() {
   const [user, setUser] = useState(null);
-  const [errorAuth, setErrorAuth] = useState(null);
 
   const [key, setKey] = useState(0);
 
@@ -24,20 +23,34 @@ export default function Page() {
   const searchParams = useSearchParams();
 
   const error = searchParams.get('error');
-  const token = searchParams.get('token');
+  const success = searchParams.get('success');
 
-  const notify = (msg) =>
-    toast.error(msg, {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-      transition: Zoom,
-    });
+  const notify = (msg, type) => {
+    if (type.error)
+      toast.error(msg, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Zoom,
+      });
+    else if (type.success)
+      toast.success(msg, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Zoom,
+      });
+  };
 
   useEffect(() => {
     const stateLog = window.localStorage.getItem('Login');
@@ -50,33 +63,39 @@ export default function Page() {
 
   useEffect(() => {
     const handleAsync = async () => {
-      if (status === 'loading') {
-        return <p>Loading...</p>;
-      }
-      if (status === 'authenticated') {
-        const role = await API.getRole(session.accessToken);
+      if (session && status === 'authenticated' && status !== 'loading') {
+        const role = await API.getRole(session?.accessToken);
 
-        if (role === 'Estudiante') return router.push('/student/game');
-        else if (role === 'Profesor') return router.push('/teacher/dashboard');
-        else {
+        if (role === 'Estudiante') {
+          router.push('/student/game');
+        } else if (role === 'Profesor') {
+          router.push('/teacher/dashboard');
+        } else {
           signOut();
         }
-      } else return;
+      }
     };
 
-    handleAsync();
+    if (status == 'authenticated' && status !== 'loading') {
+      handleAsync();
+    }
   }, [status, router, session]);
 
   useEffect(() => {
-    if (error) setTimeout(() => notify(error), 1000);
-    if (token) window.localStorage.setItem('emailValidate', token);
-  }, [error, token]);
+    if (error) setTimeout(() => notify(error, { error: true }), 1000);
+    else if (success)
+      setTimeout(() => notify(success, { success: true }), 1000);
+  }, [error, success]);
 
   const handleChangeUser = (value) => {
     window.localStorage.setItem('Login', value ? 'Profesor' : 'Estudiante');
     setKey((prevKey) => prevKey + 1);
     setUser(value);
   };
+
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="flex flex-col xl:flex-row-reverse xl:min-h-[100dvh] w-screen">
