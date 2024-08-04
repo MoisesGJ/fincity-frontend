@@ -28,12 +28,10 @@ export default function Page() {
       if (status === 'loading') return;
 
       if (status === 'unauthenticated') {
-        router.push(
-          '/login?error=Inicie%20sesi%C3%B3n%20para%20validar%20su%20cuenta'
-        );
+        router.push('/login');
       }
 
-      const isVerified = await API.validateAccountVerify(session.user.id);
+      const isVerified = await API.validateAccountVerify(session?.user.id);
 
       if (session && isVerified.error) {
         const token = window.localStorage.getItem('emailValidate');

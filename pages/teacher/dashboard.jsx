@@ -4,7 +4,7 @@ import { withAuth } from '@/services/Auth/withAuth';
 import Link from 'next/link';
 
 import CreateGroup from '@/components/Dashboard/CreateGroup';
-import StudentsFile from '@/components/Dashboard/StudentsFile';
+import StudentsFile from '@/components/Dashboard/CreateStudents';
 import Drawer from '@/components/Globals/Drawer';
 
 import { useEffect, useState } from 'react';
@@ -101,36 +101,34 @@ function Dashboard({ session }) {
       </nav>
       <Drawer session={session} />
       <div className="flex flex-row w-full h-full py-5">
-        <div className="flex flex-col gap-5 place-content-between lg:mx-16 w-full xl:px-10">
-          <div className="bg-[#FAFAFA] rounded-3xl grow h-36 lg:h-72 shadow-xl">
-            <section>
-              <div className="flex flex-row place-content-between items-center m-5 mt-8">
-                <p className="ps-5 text-2xl text-gray-600 italic">Grupo</p>
-                <button
-                  onClick={() =>
-                    document.getElementById('create_group').showModal()
-                  }
-                  className={`${
-                    group ? 'hidden' : 'block'
-                  } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3`}
-                >
-                  Crear grupo
-                </button>
-              </div>
-              <div className="m-5 text-5xl xl:text-8xl flex justify-center items-center">
-                {group ? (
-                  <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-purple-700">
-                    {group.description.length < 14
-                      ? group.description
-                      : group.description.slice(0, 13) + '...'}
-                  </span>
-                ) : (
-                  <span className="italic text-xl">
-                    No tienes ningún grupo creado
-                  </span>
-                )}
-              </div>
-            </section>
+        <div className="flex flex-col gap-5 place-content-between lg:mx-16 w-full xl:px-10 mb-10">
+          <div className="bg-[#FAFAFA] rounded-3xl grow h-52 lg:h-72 shadow-xl">
+            <div className="flex flex-row place-content-between items-center mt-8">
+              <p className="ps-5 text-2xl text-gray-600 italic">Grupo</p>
+              <button
+                onClick={() =>
+                  document.getElementById('create_group').showModal()
+                }
+                className={`${
+                  group ? 'hidden' : 'block'
+                } hover:border-2 hover:border-[#5D269A] hover:text-[#2F0F53] hover:bg-white border-2 border-[#5D269A] bg-[#5D269A] text-white rounded-lg p-2 m-3`}
+              >
+                Crear grupo
+              </button>
+            </div>
+            <div className="text-5xl xl:text-8xl flex justify-center items-center mt-5 ">
+              {group ? (
+                <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-purple-700">
+                  {group.description.length < 14
+                    ? group.description
+                    : group.description.slice(0, 13) + '...'}
+                </span>
+              ) : (
+                <span className="italic text-xl">
+                  No tienes ningún grupo creado
+                </span>
+              )}
+            </div>
           </div>
           <div className="bg-[#FAFAFA] rounded-3xl grow shadow-xl">
             <section>
@@ -277,7 +275,7 @@ function Dashboard({ session }) {
                   </p>
                 )
               ) : (
-                <p className="m-5 italic text-base">
+                <p className="italic text-xl text-center py-3 my-5">
                   Crea un grupo para añadir alumnos
                 </p>
               )}
