@@ -63,7 +63,7 @@ export default function StudentsFile({ session, update, students }) {
               </div>
 
               <Link
-                href={'/'}
+                href="/teacher/create/students"
                 className="underline text-purple-600 font-medium"
               >
                 Añadir uno por uno

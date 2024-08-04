@@ -17,11 +17,9 @@ export function withAuth(Component) {
 
         const role = await API.getRole(session.accessToken);
 
-        if (role !== 'Profesor')
-          return router.push('/login?error=Hubo%20un%20error');
+        if (role !== 'Profesor') return router.push('/login');
 
         const isVerified = await API.validateAccountVerify(session.user.id);
-        console.log('IS VERIFIEDi', isVerified);
 
         if (session && !isVerified.error) {
           setLoading(false);

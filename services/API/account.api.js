@@ -198,15 +198,14 @@ const API = {
 
   //VALIDATES
 
-  async validateAccount(encoded, auth) {
+  async validateAccount(encoded) {
     try {
       const decoded = atob(encoded);
       const r = await fetch(`${BASE_URI}/users/validate-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth}`,
-          Authentication: `Basic ${decoded}`,
+          Authorization: `Bearer ${decoded}`,
         },
       });
 
@@ -214,6 +213,7 @@ const API = {
 
       return response;
     } catch (error) {
+      console.log(error);
       return { error };
     }
   },
