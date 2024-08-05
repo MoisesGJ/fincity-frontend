@@ -69,7 +69,7 @@ export default function Tutor() {
       {loader && <Loading />}
 
       <main
-        className={`${styles.bgPattern} min-h-screen flex flex-col items-center justify-center px-5 text-white relative`}
+        className={`${styles.bgPattern} h flex flex-col items-center justify-center px-5 text-white relative`}
       >
         <span className="font-bold text-sm absolute bottom-5 start-1/2 transition -translate-x-1/2">
           FinCity * 2024
