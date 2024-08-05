@@ -79,7 +79,7 @@ export default function Page() {
   };
 
   return (
-    <div className="h">
+    <>
       {loader && <Loading />}
       <ToastContainer />
       <Email
@@ -96,6 +96,6 @@ export default function Page() {
           admin@fincity.com
         </Link>
       </h6>
-    </div>
+    </>
   );
 }

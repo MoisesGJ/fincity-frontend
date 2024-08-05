@@ -270,12 +270,12 @@ function Dashboard({ session }) {
                     )}
                   </ul>
                 ) : (
-                  <p className="m-5 italic text-base">
+                  <p className="text-center italic py-3 pb-5 px-5">
                     Crea alumnos desde un archivo o añadiendo uno por uno...
                   </p>
                 )
               ) : (
-                <p className="italic text-xl text-center py-3 my-5">
+                <p className="text-center italic py-3 pb-5 px-5">
                   Crea un grupo para añadir alumnos
                 </p>
               )}
