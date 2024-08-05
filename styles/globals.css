@@ -3,10 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 html,
 body,
 #__next {
   @apply bg-white text-black min-h-screen;
+}
+
+.h {
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.a {
+  background-color: red;
 }
