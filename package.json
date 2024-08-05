@@ -20,6 +20,7 @@
     "react-drag-drop-files": "^2.3.10",
     "react-hook-form": "^7.52.0",
     "react-toastify": "^10.0.5",
+    "react-viewport-height": "^1.2.2",
     "resend": "^3.4.0",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"

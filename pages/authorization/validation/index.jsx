@@ -6,14 +6,8 @@ import { useEffect, useState } from 'react';
 import Email from '@/components/EmailVerify/';
 import { toast, Bounce, ToastContainer } from 'react-toastify';
 
-import { Chakra_Petch } from 'next/font/google';
 import Link from 'next/link';
 import Loading from '@/components/Globals/LoadingPage';
-
-const chakra = Chakra_Petch({
-  subsets: ['latin'],
-  weight: ['300', '400', '600'],
-});
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -85,7 +79,7 @@ export default function Page() {
   };
 
   return (
-    <div className={chakra.className}>
+    <div className="h">
       {loader && <Loading />}
       <ToastContainer />
       <Email

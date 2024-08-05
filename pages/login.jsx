@@ -26,7 +26,7 @@ export default function Page() {
   const success = searchParams.get('success');
 
   const notify = (msg, type) => {
-    if (type.error)
+    if (type && type.error)
       toast.error(msg, {
         position: 'top-center',
         autoClose: 3000,
@@ -38,7 +38,7 @@ export default function Page() {
         theme: 'colored',
         transition: Zoom,
       });
-    else if (type.success)
+    else if (type && type.success)
       toast.success(msg, {
         position: 'top-center',
         autoClose: 3000,
@@ -50,6 +50,19 @@ export default function Page() {
         theme: 'colored',
         transition: Zoom,
       });
+    else {
+      toast.error(msg, {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Zoom,
+      });
+    }
   };
 
   useEffect(() => {
