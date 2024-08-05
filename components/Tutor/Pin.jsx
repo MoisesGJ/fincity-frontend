@@ -43,6 +43,7 @@ export default function Pin({ createPin }) {
         {values.map((value, index) => {
           return (
             <input
+              type="number"
               ref={(curr) => (inputsRef.current[index] = curr)}
               value={value}
               maxLength={1}
